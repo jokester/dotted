@@ -1,4 +1,4 @@
-# vim ft=zsh,sh
+# vim: ft=sh
 # Path to your oh-my-zsh configuration.
 
 alias s=screen
@@ -100,3 +100,14 @@ compinit
 # End of lines added by compinstall
 
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+gitat () {
+    if [[ $# -eq 0 ]]; then
+        unset GIT_AUTHOR_DATE
+        unset GIT_COMMITTER_DATE
+    elif now="$(date --date=$1)"; then
+        echo "setting GIT_AUTHOR_DATE=GIT_COMMITTER_DATE=$now"
+        export GIT_AUTHOR_DATE="$now"
+        export GIT_COMMITTER_DATE="$now"
+    fi
+}
