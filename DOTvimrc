@@ -1,0 +1,137 @@
+set nocompatible
+
+if filereadable( $HOME . '/.vimrc.bundle' )
+    source ~/.vimrc.bundle
+endif
+
+colorscheme desert
+
+" move between visual lines
+nnoremap <j> <g><j>
+nnoremap <k> <g><k>
+
+" move between windows
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <C-e> <C-w>c
+
+" shortcut
+nnoremap Q :qa<CR>
+nnoremap / :noh<CR>/
+
+""""""""""""" section: dictionary related
+" completion list
+inoremap <C-k> <C-x><C-o>
+" first spell suggestion
+nnoremap zz 1z=
+
+"platform dependent settings
+if(has("win32") || has("win95") || has("win64") || has("win16"))
+    "win
+    set fileencodings=utf8,cp936,cp932
+    let g:fencview_autodetect=1
+elseif (has("unix") && (system("uname") =~ "Darwin"))
+    "mac
+    set dictionary=/usr/share/dict/words
+    let g:fencview_autodetect=1
+    let g:fencview_checklines=30
+    colorscheme desert
+else
+    "linux
+    set dictionary=/usr/share/dict/usa
+    set spellsuggest=best,5
+    " set spell
+    " set spellsuggest=best,5
+    let g:fencview_autodetect=1
+    let g:fencview_checklines=30
+endif
+set nospell
+set ambiwidth=double " set for width of CJK special charater font
+
+"encodings
+set encoding=utf8
+set fileformats=unix,dos,mac
+
+"ui language
+"language messages en_us
+
+set nobackup
+set noswapfile
+
+set showtabline=2
+
+set magic
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+set nowrap
+
+set number
+set ruler
+
+set showcmd
+set autoread
+
+set scrolloff=5
+set laststatus=2
+
+"programming related
+filetype on
+filetype plugin on
+filetype indent on
+syntax on
+set previewheight=5
+
+set autoindent
+set showmatch
+
+"vimdiff related
+set diffopt+=context:12
+"auto refresh diff :  see OnInsertEnter, OnInsertLeave
+autocmd InsertLeave * call OnInsertLeave()
+autocmd InsertEnter * call OnInsertEnter()
+
+syn match EOLWS /^%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%/
+function OnInsertEnter ()
+    if &diff == 1
+        diffupdate
+    endif
+    syn clear EOLWS
+    syn match EOLWS excludenl /\s\+\%#\@!$/
+    highlight EOLWS ctermbg=red guibg=red
+endfunction
+
+function OnInsertLeave ()
+    if &diff == 1
+        diffupdate
+    endif
+    syn clear EOLWS
+    syn match EOLWS excludenl /\s\+$/
+    highlight EOLWS ctermbg=red guibg=red
+    if pumvisible() == 0
+        pclose
+    endif
+endfunction
+
+" mouse in terminal
+"set mouse=a
+
+if has("autocmd") && exists("+omnifunc")
+    autocmd Filetype *
+                \	if &omnifunc == "" | 
+                \	 setlocal omnifunc=syntaxcomplete#Complete |
+                \	endif
+endif
+
+au BufReadCmd *.jar,*.xpi,*.ipa,*.apk call zip#Browse(expand("<amatch>"))
+
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+
+set expandtab
+set smarttab

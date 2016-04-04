@@ -1,0 +1,35 @@
+" vim: ft=vim
+"appearance
+set guioptions-=T
+set guioptions-=m
+
+"platform dependent settings
+if(has("win32") || has("win95") || has("win64") || has("win16"))
+	"win
+	set lines=40
+	set columns=120
+	set guifont=Consolas:h13
+	set clipboard=unnamed
+elseif (has("unix") && (system("uname") =~ "Darwin"))
+	"mac
+	set lines=40
+	set columns=120
+	set guifont=Monaco:h14
+	set clipboard=unnamed
+	set vb " visual bell, which disables alert sound
+else
+	"linux
+	set lines=30
+	set columns=120
+	set guifont=Droid\ Sans\ Mono\ 14
+	set clipboard=unnamedplus
+endif
+
+"set cursorcolumn
+"set cursorline
+colorscheme tir_black
+
+" tab navigation like firefox
+nnoremap <C-S-tab> :tabprevious<CR>
+nnoremap <C-tab>   :tabnext<CR>
+nnoremap <C-t>     :tabnew<CR>
