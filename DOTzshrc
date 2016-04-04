@@ -1,0 +1,92 @@
+# vim ft=zsh,sh
+# Path to your oh-my-zsh configuration.
+
+source $HOME/.__me/env
+
+if [ -d /usr/local/share/zsh-completions ]; then
+  fpath=(/usr/local/share/zsh-completions $fpath)
+fi
+
+typeset -U path cdpath fpath manpath
+
+if [[ "$TERM" != "screen-256color" ]]; then
+  export TERM=xterm-256color
+fi
+
+prepend_to_path () {
+  while [ $# -gt 0 ];do
+    if [ -d $1 ]; then
+      path=($1(N-/) $path)
+    else
+      : # echo "!" $1
+    fi
+    # echo "+" $1
+    # echo "=" $PATH
+    shift
+  done
+}
+
+prepend_to_path \
+  "$HOME/.__me"                         \
+  "$HOME/.cabal/bin"                    \
+  "$HOME/homebrew/bin"                    \
+  "$HOME/.local/bin"                    \
+  "$HOME/local/bin"  \
+  "$HOME/Library/Android/sdk/platform-tools"
+
+prepend_to_path \
+  "$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+
+# Add GHC 7.10.2 to the PATH, via https://ghcformacosx.github.io/
+export GHC_DOT_APP="/opt/homebrew-cask/Caskroom/ghc/7.10.2-r0/ghc-7.10.2.app"
+if [ -d "$GHC_DOT_APP" ]; then
+  export PATH="${HOME}/.local/bin:${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
+fi
+ZSH_THEME="my-theme"
+# Set to this to use case-sensitive completion
+# CASE_SENSITIVE="true"
+
+# Uncomment this to disable bi-weekly auto-update checks
+DISABLE_AUTO_UPDATE="true"
+
+# Uncomment to change how often before auto-updates occur? (in days)
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment following line if you want to disable colors in ls
+# DISABLE_LS_COLORS="true"
+
+# Uncomment following line if you want to disable autosetting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment following line if you want to disable command autocorrection
+# DISABLE_CORRECTION="true"
+
+# Uncomment following line if you want red dots to be displayed while waiting for completion
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment following line if you want to disable marking untracked files under
+# VCS as dirty. This makes repository status check for large repositories much,
+# much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+plugins=(profiles git screen command-not-found adb brew brew-cask bundler cabal dircycle docker emoji-clock encode64 extract gem git-extras git-flow gradle history history-substring-search ruby rvm screen systemd)
+# no specify: dirty
+GIT_STATUS_IGNORE_SUBMODULES=git
+
+zstyle ':completion:::*:default' menu no select
+zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
+zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+
+ZSH=$HOME/.oh-my-zsh
+ZSH_CUSTOM=~/.zsh-custom
+source $ZSH/oh-my-zsh.sh
+
+# The following lines were added by compinstall
+zstyle :compinstall filename "$HOME/"
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall

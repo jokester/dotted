@@ -1,0 +1,43 @@
+#
+# ~/.bashrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+if which brew &>/dev/null ; then
+  if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    source $(brew --prefix)/etc/bash_completion
+  fi
+fi
+
+add_to_path () {
+  while [ $# -gt 0 ];do
+    if [[ $PATH =~ :"$1":|^"$1":|:"$1"$ ]];then
+      :
+    else
+      [ -d "$1" ] && PATH="$1:$PATH"
+    fi
+    shift
+  done
+}
+
+add_to_path \
+  $HOME/.npm/*/*/package/bin            \
+  "$HOME/.__me"                         \
+  "$HOME/.cabal/bin"                    \
+  "$HOME/xunlei-lixian"
+
+if [ -z "${RUBY_VERSION}" ];then # not rvm
+  export GEM_HOME=$HOME/.gem
+  add_to_path \
+    "$HOME/.gem/ruby/2.0.0/bin"         \
+    "$HOME/.gem/ruby/1.9.1/bin"         \
+    "$HOME/.gem/ruby/1.8/bin"           \
+    "$HOME/.gem/bin"
+else
+  : #let rvm handle them
+fi
+
+source $HOME/.__me/color
+source $HOME/.__me/env

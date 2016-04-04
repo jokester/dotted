@@ -1,0 +1,42 @@
+# vim: ft=sshconfig
+# shell completion
+
+# BEGIN hosts
+# END  hosts
+
+# BEGIN snippets
+Host *tun*
+    LogLevel DEBUG
+Host *tun-local50000-to-remote*
+    DynamicForward 50000
+Host *tun-local50001-to-remote*
+    DynamicForward 50001
+Host *tun-local50002-to-remote*
+    DynamicForward 50002
+Host *tun-local50003-to-remote*
+    DynamicForward 50003
+Host *tun-remote60000-to-local22*
+    RemoteForward 60000 localhost:22
+Host *tun-remote60001-to-local22*
+    RemoteForward 60001 localhost:22
+Host *tun-remote60002-to-local22*
+    RemoteForward 60002 localhost:22
+
+Host <<UNUSED_SNIPPETS>>
+    # use a socks proxy at 127.0.0.1:9050
+    ProxyCommand nc -x localhost:9050 %h %p
+    # use a private key file
+    IdentityFile ~/.ssh/id_mono
+    ForwardX11 yes
+    ForwardX11Trusted yes
+
+Host *controlmaster*
+    ControlMaster yes
+    ControlPersist yes
+Host *
+    ServerAliveInterval 600
+    ControlMaster auto
+    ControlPath ~/.ssh/.ssh-socket-%u-%r@%h:%p
+    Compression yes
+    Protocol 2
+# END snippets

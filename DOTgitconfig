@@ -1,0 +1,56 @@
+# vim: ft=gitconfig
+[user]
+    email = momocraft@gmail.com
+    name  = "Wang Guan"
+[color]
+    branch      = auto
+    diff        = auto
+    interactive = auto
+    status      = auto
+[alias]
+    lg    = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(bold white)- %an%C(reset)'
+    co    = checkout
+    cm    = commit -e
+    r     = checkout --
+    unadd = reset HEAD
+    d     = difftool
+    mp    = !"foo () { git format-patch -C -M --stdout --attach \"$@\" | git imap-send ; } ; foo"
+    klean = clean -x -d -f  # remove all non-tracked and ignored files
+    txz   = !"foo () { if [ -n \"$1\" ]; then treeish=\"$1\" ; else treeish=HEAD; fi; git archive \"$treeish\" | xz -9 ; } ; foo "
+    m     = merge --no-ff
+    b     = branch -avv
+    s     = status -sb
+    gca   = gc --aggressive
+    wd    = diff --color-words --minimal
+
+[core]
+    whitespace = trailing-space,space-before-tab
+    abbrev = 6
+    editor = "vim"
+    quotepath = false
+
+[apply]
+    whitespace = fix
+[diff]
+    tool = gvimdiff
+[difftool]
+    prompt = false
+[imap]
+    folder = "[Gmail]/Drafts"
+    host = imaps://imap.gmail.com
+    user = momocraft@gmail.com
+    pass = bsmppivgfztgkiar
+    port = 993
+    sslverify = true
+
+# DISABLED because I don't want to install perl ssl modules
+; [sendemail]
+;     smtpencryption = tls
+;     smtpserver = smtp.gmail.com
+;     smtpuser = momocraft@gmail.com
+;     smtpserverport = 587
+;     smtppass = bsmppivgfztgkiar
+[push]
+    default = current
+[credential]
+    helper = "cache --timeout 3600"

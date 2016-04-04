@@ -1,0 +1,159 @@
+" vim: ft=vim
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+
+" detect / switch encoding
+Bundle 'mbbill/fencview'
+
+" diff 2 dirs
+Bundle 'vim-scripts/DirDiff.vim'
+
+" better grep
+nnoremap ,a :Ack
+Bundle 'mileszs/ack.vim'
+
+" filter current file
+Bundle 'vim-scripts/Quich-Filter'
+nnoremap <C-g> :call FilteringNew().parseQuery(input('>'),'\|').run()<CR>
+
+" file manager
+nnoremap <F2> :NERDTreeToggle<CR>
+Bundle 'vim-scripts/The-NERD-tree'
+    let g:NERDTreeDirArrows=0
+    let NERDTreeIgnore = ['\.pyc$', '\.aux$']
+
+" tasklist
+nnoremap <F3> :TaskList<CR>
+Bundle 'vim-scripts/TaskList.vim'
+    let g:tlTokenList = ["FIXME", "TODO", "XXX", "NOTE", "@todo"]
+
+" undo tree
+nnoremap <F5> :GundoToggle<CR>
+Bundle 'vim-scripts/Gundo'
+
+" tagbar for classes / methods / etc.
+nnoremap <F6> :TagbarToggle<CR>
+Bundle 'majutsushi/tagbar'
+    let g:tagbar_iconchars=['+','-']
+    let g:tagbar_autofocus=1
+    if executable('coffeetags')     " gem install CoffeeTags
+        let g:tagbar_type_coffee = {
+                    \ 'ctagsbin' : 'coffeetags',
+                    \ 'ctagsargs' : '--include-vars',
+                    \ 'kinds' : [
+                    \ 'f:functions',
+                    \ 'o:object',
+                    \ ],
+                    \ 'sro' : ".",
+                    \ 'kind2scope' : {
+                    \ 'f' : 'object',
+                    \ 'o' : 'object',
+                    \ }
+                    \ }
+    endif
+
+" git integration
+nnoremap <F7> :Gvdiff<CR>
+nnoremap <F8> :Gstatus<CR>
+Bundle 'tpope/vim-fugitive'
+
+" auto save
+Bundle '907th/vim-auto-save'
+let g:auto_save = 1  " enable AutoSave on Vim startup
+let g:auto_save_no_updatetime = 1  " do not change the 'updatetime' option
+
+" better text objects for brackets
+Bundle 'tpope/vim-surround'
+
+" text objects for camelCase
+Bundle "bkad/CamelCaseMotion"
+
+" fast commenting out
+Bundle 'tpope/vim-commentary'
+
+" align text
+vnoremap <silent> <Enter> :EasyAlign<Enter>
+Bundle "junegunn/vim-easy-align"
+let g:easy_align_ignore_groups = []
+    let g:easy_align_delimiters = {
+                \ '>': { 'pattern': '>>\|=>\|>' },
+                \ '/': { 'pattern': '//\+\|/\*\|\*/', 'ignore_groups': ['String'] },
+                \ '#': { 'pattern': '#\+', 'ignore_groups': ['String'], 'delimiter_align': 'l' },
+                \ ']': {
+                \     'pattern':       '[[\]]',
+                \     'left_margin':   0,
+                \     'right_margin':  0,
+                \     'stick_to_left': 0
+                \   },
+                \ ')': {
+                \     'pattern':       '[()]',
+                \     'left_margin':   0,
+                \     'right_margin':  0,
+                \     'stick_to_left': 0
+                \   },
+                \ 'd': {
+                \     'pattern': ' \(\S\+\s*[;=]\)\@=',
+                \     'left_margin': 0,
+                \     'right_margin': 0
+                \   },
+                \ '\': {
+                \     'pattern': '\\$',
+                \   },
+                \ }
+
+""""""""""""" section: looking
+" show marks
+Bundle "kshenoy/vim-signature"
+
+Bundle 'nathanaelkane/vim-indent-guides.git'
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size = 1
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#ffc261 ctermbg=3 "applejack
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#f3b6cf ctermbg=4 "pinkie
+
+""""""""""""" section: programming related
+
+" insert closing pair of brackets
+" Bundle 'vim-scripts/simple-pairs'
+
+" syntax check
+Bundle 'scrooloose/syntastic'
+
+" code completion
+Bundle 'Valloric/YouCompleteMe'
+    let g:ycm_add_preview_to_completeopt=1
+    let g:ycm_key_list_select_completion=[]    " leave tab to me
+    let g:ycm_key_list_previous_completion=[]
+    let g:ycm_key_invoke_completion = '<C-a>'
+    if v:version < 703 || (v:version == 703 && !has('patch584')) || !has( 'python' )
+        let g:loaded_youcompleteme=1
+    endif
+
+" Bundle 'vim-ruby/vim-ruby'
+"     autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+"     autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+"     autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+"     autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+
+" code snippets
+Bundle 'SirVer/ultisnips'
+Bundle 'honza/vim-snippets'
+
+" language
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-bundler'
+Bundle 'othree/html5.vim'
+Bundle 'ap/vim-css-color'
+Bundle 'tpope/vim-haml'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'tpope/vim-endwise'
+Bundle 'Keithbsmiley/swift.vim'
+Bundle "ekalinin/Dockerfile.vim"
+
+Bundle 'vim-scripts/tir_black'
+
+Bundle 'bling/vim-airline'
