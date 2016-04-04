@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -u
+
+on_ctrl_c () {
+  kill -9 $PID_SCHEME
+}
+
+run_scheme_file () {
+  mit-scheme --quiet < $1 &
+  PID_SCHEME=$!
+  trap on_ctrl_c INT
+  wait
+}
+
+if which mit-scheme &>/dev/null ; then
+  if [ $# -gt 0 ]; then
+    run_scheme_file "$1"
+  else
+    echo "usage: $0 [scheme file]"
+  fi
+else
+  echo "'mit-scheme' executable not found"
+fi

@@ -1,8 +1,6 @@
 # vim ft=zsh,sh
 # Path to your oh-my-zsh configuration.
 
-source $HOME/.__me/env
-
 if [ -d /usr/local/share/zsh-completions ]; then
   fpath=(/usr/local/share/zsh-completions $fpath)
 fi
