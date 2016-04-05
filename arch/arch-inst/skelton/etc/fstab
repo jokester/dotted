@@ -1,0 +1,7 @@
+#
+# /etc/fstab: static file system information
+#
+# <file system>	<dir>	<type>	<options>	<dump>	<pass>
+tmpfs		/tmp	tmpfs	nodev,nosuid	0	0
+UUID=<uuid>	/	<type>	defaults	0	1
+#/new_root/usr/usr.sfs	/usr	squashfs	defaults,ro	0	0

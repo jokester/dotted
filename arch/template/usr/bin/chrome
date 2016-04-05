@@ -1,0 +1,5 @@
+#!/bin/bash
+export http_proxy="http://www-proxy.waseda.jp:8080"
+export https_proxy="http://www-proxy.waseda.jp:8080"
+export no_proxy="localhost,127.0.0.1,*.waseda.jp"
+exec chromium

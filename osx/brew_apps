@@ -1,0 +1,5 @@
+brew tap homebrew/dupes
+brew install git cmake cscope ctags ruby apktool imagemagick
+brew install lftp nmap aria2 privoxy
+brew install p7zip pv screen unrar xz wget midnight-commander dos2unix htop-osx zsh
+brew install macvim --override-system-vim

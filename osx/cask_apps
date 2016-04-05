@@ -1,0 +1,21 @@
+brew install caskroom/cask/brew-cask
+brew cask install \
+boxer                      \
+dropbox                    \
+evernote                   \
+filezilla                  \
+firefox                    \
+hex-fiend                  \
+ichm                       \
+ireadfast                  \
+iterm2                     \
+keka                       \
+seil                       \
+techstoreclub-simple-comic \
+skype                      \
+steam                      \
+torbrowser                 \
+welly                      \
+visual-studio-code         \
+android-studio             \
+pencil
