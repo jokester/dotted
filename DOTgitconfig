@@ -21,7 +21,8 @@
     b     = branch -avv
     s     = status -sb
     gca   = gc --aggressive
-    wd    = diff --color-words --minimal
+    diff-word = diff --color-words --minimal
+    diff-char = diff --color-words=. --minimal
 
 [core]
     whitespace = trailing-space,space-before-tab
