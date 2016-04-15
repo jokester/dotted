@@ -17,12 +17,14 @@
     mp    = !"foo () { git format-patch -C -M --stdout --attach \"$@\" | git imap-send ; } ; foo"
     klean = clean -x -d -f  # remove all non-tracked and ignored files
     txz   = !"foo () { if [ -n \"$1\" ]; then treeish=\"$1\" ; else treeish=HEAD; fi; git archive \"$treeish\" | xz -9 ; } ; foo "
-    m     = merge --no-ff
-    b     = branch -avv
-    s     = status -sb
-    gca   = gc --aggressive
-    diff-word = diff --color-words --minimal
-    diff-char = diff --color-words=. --minimal
+    m         = merge  --no-ff
+    b         = branch -avv
+    s         = status -sb
+    gca       = gc     --aggressive
+    # diff-word
+    dw        = diff   --color-words='\\w+|.'   --minimal
+    # diff-char
+    dc        = diff   --color-words=. --minimal
 
 [core]
     whitespace = trailing-space,space-before-tab

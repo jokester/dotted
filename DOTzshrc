@@ -93,3 +93,5 @@ zstyle :compinstall filename "$HOME/"
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
+
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
