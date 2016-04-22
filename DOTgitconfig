@@ -25,6 +25,7 @@
     dw        = diff   --color-words='\\w+|.'   --minimal
     # diff-char
     dc        = diff   --color-words=. --minimal
+    track     = log -p -M --follow --stat --
 
 [core]
     whitespace = trailing-space,space-before-tab
