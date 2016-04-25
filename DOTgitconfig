@@ -7,6 +7,7 @@
     diff        = auto
     interactive = auto
     status      = auto
+    ui          = auto
 [alias]
     lg    = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(bold white)- %an%C(reset)'
     co    = checkout
@@ -22,9 +23,9 @@
     s         = status -sb
     gca       = gc     --aggressive
     # diff-word
-    dw        = diff   --color-words='\\w+|.'   --minimal
+    dw        = diff   --color-words='\\w+|.'   --minimal --ignore-all-space
     # diff-char
-    dc        = diff   --color-words=. --minimal
+    dc        = diff   --color-words=.          --minimal --ignore-all-space
     track     = log -p -M --follow --stat --
 
 [core]
