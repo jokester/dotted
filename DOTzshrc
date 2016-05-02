@@ -2,6 +2,11 @@
 # Path to your oh-my-zsh configuration.
 
 alias s=screen
+alias rsync="rsync -P --hard-links -r"
+alias grep="grep --color=auto"
+alias less="less -R"
+alias now="date '+%Y%m%d-%H%M%S-%N'"
+
 if [ -d /usr/local/share/zsh-completions ]; then
   fpath=(/usr/local/share/zsh-completions $fpath)
 fi
