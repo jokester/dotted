@@ -27,6 +27,7 @@
     # diff-char
     dc        = diff   --color-words=.          --minimal --ignore-all-space
     track     = log -p -M --follow --stat --
+    update-submodule = submodule foreach "git checkout master && git pull"
 
 [core]
     whitespace = trailing-space,space-before-tab

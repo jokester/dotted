@@ -1,3 +1,4 @@
 /DOTvim/
 /DOTssh/
 /DOTweechat/logs/
+/DOTweechat/**/*.log
