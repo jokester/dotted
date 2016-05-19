@@ -2,3 +2,4 @@
 /DOTssh/
 /DOTweechat/logs/
 /DOTweechat/**/*.log
+/DOTconfig/*
