@@ -45,6 +45,9 @@ wicd
 linux-firmware
 intel-ucode
 
-syslinux
-
 vim
+
+unrar
+zip
+p7zip
+unace

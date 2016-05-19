@@ -12,7 +12,7 @@ job left for you:
 	arch-chroot into /mnt, then
 	change hostname in /etc/hostname
 	set passwd
-	install and config some bootloader
+	install and config bootloader
 	run 'locale-gen'          if you changed locale
 	run 'mkinitcpio -p linux' if you changed sth about mkinitcpio
 "
