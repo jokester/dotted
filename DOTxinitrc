@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+#
+# different DM uses different filename:
+# lightdm: ~/.xprofile
+# slim:    ~/.xinitrc
+
+# from old ~/.xinitrc
+if [ -d /etc/X11/xinit/xinitrc.d ]; then
+  for f in /etc/X11/xinit/xinitrc.d/*; do
+    [ -x "$f" ] && . "$f"
+  done
+  unset f
+fi
+
+log () {
+  echo "$1=<$2>" >> ~/tmp/h.xinitrc_LOG
+}
+
+init_____xfce () {
+  export XIM=fcitx
+  export GTK_IM_MODULE=xim
+  export QT_IM_MODULE=xim
+  export XMODIFIERS=@im=fcitx
+
+  local hostname="$(hostname)"
+  if [ "$hostname" = "cosmos" ]; then
+    xrandr --output HDMI-0 --set underscan on
+  fi
+
+  if [ "$hostname" = "kakitsubata" ] || [ "$hostname" = "cosmos" ] ;then
+    setxkbmap jp
+  else
+    log "not running setxkbmap jp"
+  fi
+
+  if [ "$hostname" = "thinkpad" ];then
+    synclient TouchPadOff=1 # disable touchpad
+  fi
+
+  xmodmap -e 'clear Lock'
+  xmodmap -e 'keycode 66 = Escape'
+  xmodmap -e 'keycode 9 = Caps_Lock'
+  xset r rate 200 32
+
+  # only needed in jp101 layout
+  # fcitx -rd --disable fcitx-xkb 
+  fcitx -rd
+
+  # disable pc speaker
+  xset -b
+
+  # ssh-agent
+  # eval $(ssh-agent -s)
+}
+
+init_____xfce
+unset init_____xfce
+unset log
