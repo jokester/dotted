@@ -2,7 +2,6 @@
 echo "install packages"
 pacstrap              \
   -C /etc/pacman.conf \
-  -c                  \
   /mnt                \
   $(<pkglist_basic)
 
