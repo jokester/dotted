@@ -135,3 +135,5 @@ set shiftwidth=4
 
 set expandtab
 set smarttab
+
+autocmd BufNewFile,BufRead *.md set filetype=markdown
