@@ -15,4 +15,16 @@ job left for you:
 	install and config bootloader
 	run 'locale-gen'          if you changed locale
 	run 'mkinitcpio -p linux' if you changed sth about mkinitcpio
+  enable following services:
+    - sshd
+    - ntpdate
+    - smartd
+    - cronie
+    - docker
+    - dhcpcd @ (NIC)
+    -
+
+
+
+
 "

@@ -13,7 +13,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 
 log () {
-  echo "$1=<$2>" >> ~/tmp/h.xinitrc_LOG
+  echo "$1=<$2>" >> ~/.xinitrc_LOG
 }
 
 init_____xfce () {
@@ -37,14 +37,14 @@ init_____xfce () {
     synclient TouchPadOff=1 # disable touchpad
   fi
 
+  # fcitx-xkb causes xmodmap settings to be reset
+  fcitx -rd --disable fcitx-xkb
+
   xmodmap -e 'clear Lock'
   xmodmap -e 'keycode 66 = Escape'
   xmodmap -e 'keycode 9 = Caps_Lock'
+  log "xmodmap executed" "$(date)"
   xset r rate 200 32
-
-  # only needed in jp101 layout
-  # fcitx -rd --disable fcitx-xkb 
-  fcitx -rd
 
   # disable pc speaker
   xset -b
@@ -54,5 +54,6 @@ init_____xfce () {
 }
 
 init_____xfce
+log 'xinitrc' 'running'
 unset init_____xfce
 unset log
