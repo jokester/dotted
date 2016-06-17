@@ -28,6 +28,9 @@
     dc        = diff   --color-words=.          --minimal --ignore-all-space
     track     = log -p -M --follow --stat --
     update-submodule = submodule foreach "git checkout master && git pull"
+    # "try" a merge without creating a commit. one can `git merge --abort` or `git dontmerge` later
+    try-merge = merge --no-commit --no-ff
+    dontmerge = merge --abort
 
 [core]
     whitespace = trailing-space,space-before-tab
