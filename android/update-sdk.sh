@@ -19,12 +19,12 @@ function install_sdk {
 }
 
 function fetch_package_indices {
-  android list sdk -u -s -a         \
-    | grep -iv obsolete             \
-    | grep -iv sources              \
-    | grep -iv 'system image'       \
-    | sed 's/^[ ]*\([0-9]*\).*/\1/' \
-    | grep -v '^\s*$'               \
+  android list sdk -u -s -e         \
+    | grep '^id:'                   \
+    | cut -d'"' -f2                 \
+    | grep -v 'source'              \
+    | grep -v 'sys-img'             \
+    | grep -v 'doc'                 \
     | paste -d, -s -
 }
 
