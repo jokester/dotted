@@ -102,10 +102,16 @@ compinit
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
 gitat () {
+    local date="date"
+    # BSD date is not supported
+    if which gdate &> /dev/null; then
+      date="gdate"
+    fi
     if [[ $# -eq 0 ]]; then
         unset GIT_AUTHOR_DATE
         unset GIT_COMMITTER_DATE
-    elif now="$(date --date=$1)"; then
+        echo "unsetting GIT_AUTHOR_DATE and GIT_COMMITTER_DATE"
+    elif now="$($date --date=$1)"; then
         echo "setting GIT_AUTHOR_DATE=GIT_COMMITTER_DATE=$now"
         export GIT_AUTHOR_DATE="$now"
         export GIT_COMMITTER_DATE="$now"
