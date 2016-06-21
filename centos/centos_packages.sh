@@ -11,4 +11,5 @@ yum install \
   git zsh screen vim htop rsync lftp mlocate pv \
   nmap weechat transmission-daemon wget \
   ruby ruby-devel clang docker python-devel cmake ghc cabal-install \
-  yum-utils yum-cron iotop iftop deltarpm bind-utils
+  yum-utils yum-cron iotop iftop deltarpm bind-utils \
+  gnutls-utils rsyslog-gnutls
