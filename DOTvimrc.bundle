@@ -160,3 +160,7 @@ Bundle 'vim-scripts/tir_black'
 Bundle 'bling/vim-airline'
 
 Bundle 'leafgarland/typescript-vim'
+
+" jsx
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
