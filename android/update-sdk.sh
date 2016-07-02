@@ -11,7 +11,7 @@ else
 fi
 
 android () {
-  "$(dirname $0)/tools/android" "$@"
+  "./tools/android" "$@"
 }
 
 function install_sdk {
