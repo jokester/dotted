@@ -32,6 +32,9 @@
     try-merge = merge --no-commit --no-ff
     dontmerge = merge --abort
 
+    # diff between (current ancestor) and another branch
+    diff-if-merge = !"foo () { local ancestor=$(git merge-base HEAD \"$1\" ); git diff $ancestor \"$1\" ; } ; foo "
+
 [core]
     whitespace = trailing-space,space-before-tab
     abbrev = 6
