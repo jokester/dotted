@@ -8,7 +8,7 @@ yum install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.
 yum update
 yum groupinstall "Development Tools" -y
 yum install \
-  git zsh screen vim htop rsync lftp mlocate pv \
+  git zsh screen vim htop rsync lftp mlocate pv ntp \
   nmap weechat transmission-daemon wget \
   ruby ruby-devel clang docker python-devel cmake ghc cabal-install \
   yum-utils yum-cron iotop iftop deltarpm bind-utils \
