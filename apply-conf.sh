@@ -1,5 +1,5 @@
 #!/bin/bash
-set -u
+set -ue
 cd "$(dirname "$0")"
 
 link-dotfile () {
@@ -12,15 +12,15 @@ link-dotfile () {
 
     # when a symlink existed at $newfile, overwrite it
     elif [[ -h "$newfile" ]]; then
-      if rm -v "$newfile" ; then
+      if rm "$newfile" ; then
         ln -svf "$PWD/$dotfile" "$newfile"
+      else
+        echo -e "##### FAILED to remove symlink at $newfile \t\t#####"
       fi
 
     # otherwise, just report
     else
-      echo "#########################################################"
-      echo "##### '$newfile' already exists and is not touched"
-      echo "#########################################################"
+      echo -e "##### '$newfile' already exists and is not touched \t\t#####"
     fi
   done
 }
