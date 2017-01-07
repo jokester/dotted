@@ -14,12 +14,12 @@ android () {
   "./tools/android" "$@"
 }
 
-function install_sdk {
-  android update sdk -u -s -a -t "$1"
+function update_sdk {
+  android update sdk -a -u -t "$1"
 }
 
 function fetch_package_indices {
-  android list sdk -u -s -e         \
+  android list sdk -u -a -e      \
     | grep '^id:'                   \
     | cut -d'"' -f2                 \
     | grep -v 'source'              \
@@ -32,7 +32,7 @@ main () {
   (while : ; do
   echo 'y'
   sleep 1
-  done) | android update sdk -u -s -a -t "$(fetch_package_indices)"
+  done) | update_sdk "$(fetch_package_indices)"
 }
 
 main
