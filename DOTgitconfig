@@ -13,6 +13,8 @@
     co    = checkout
     cm    = commit -e
     r     = checkout --
+    # discard from work tree (and checkout HEAD)
+    rp    = checkout -p --
     unadd = reset HEAD
     d     = difftool
     mp    = !"foo () { git format-patch -C -M --stdout --attach \"$@\" | git imap-send ; } ; foo"
