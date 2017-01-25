@@ -15,7 +15,10 @@ update-ip () {
   date
   local PREV_IP="$MY_IP"
   MY_IP=`curl https://ipinfo.io/ip -s`
-  if [[ "$MY_IP" = "$PREV_IP" ]] ; then
+  if [[ $? -ne 0 ]]; then
+    echo "error getting current IP"
+    return
+  elif [[ "$MY_IP" = "$PREV_IP" ]] ; then
     echo "no need to update"
     return
   fi
