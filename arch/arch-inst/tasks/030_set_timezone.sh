@@ -1,3 +1,3 @@
 # set timezone
-echo "set timezone"
-ln -s "/usr/share/zoneinfo/Asia/Tokyo" /mnt/etc/localtime
+echo "set timezone - no longer needed"
+# ln -s "/usr/share/zoneinfo/Asia/Tokyo" /mnt/etc/localtime
