@@ -40,6 +40,9 @@ prepend_to_path \
 if [[ -d "$HOME/Library/Android/sdk" ]]; then
   export ANDROID_HOME="$HOME/Library/Android/sdk"
   prepend_to_path "$HOME/Library/Android/sdk/platform-tools"
+elif [[ -d "$HOME/Android/Sdk" ]]; then
+  export ANDROID_HOME="$HOME/Android/Sdk"
+  prepend_to_path "$HOME/Android/Sdk/platform-tools"
 fi
 
 prepend_to_path \
