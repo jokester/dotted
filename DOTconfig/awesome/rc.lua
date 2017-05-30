@@ -40,11 +40,11 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
+beautiful.init(awful.util.get_themes_dir() .. "sky/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
-editor = os.getenv("EDITOR") or "nano"
+terminal = "xfce4-terminal"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -56,18 +56,17 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.floating,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
+    awful.layout.suit.max,
+    awful.layout.suit.floating,
     awful.layout.suit.fair.horizontal,
+    -- awful.layout.suit.tile,
+    awful.layout.suit.tile.left,
+    -- awful.layout.suit.tile.top,
+    awful.layout.suit.fair,
     awful.layout.suit.spiral,
     awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
     awful.layout.suit.corner.nw,
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
@@ -281,10 +280,16 @@ globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey, "Control" }, "r", awesome.restart,
-              {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-              {description = "quit awesome", group = "awesome"}),
+    awful.key({ modkey,           }, "v", function () awful.spawn("gvim") end,
+              {description = "open gvim", group = "launcher"}),
+    awful.key({ modkey,           }, "e", function () awful.spawn("thunar") end,
+              {description = "open thunar", group = "launcher"}),
+    awful.key({ modkey,           }, "q", function () awful.spawn("xfce4-appfinder") end,
+              {description = "open appfinder", group = "launcher"}),
+    -- awful.key({ modkey, "Control" }, "r", awesome.restart,
+    --           {description = "reload awesome", group = "awesome"}),
+    -- awful.key({ modkey, "Shift"   }, "q", awesome.quit,
+    --           {description = "quit awesome", group = "awesome"}),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
