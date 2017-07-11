@@ -103,6 +103,7 @@ compinit
 
 gitat () {
     local date="date"
+    # prefer gnu date if exists
     # BSD date is not supported
     if which gdate &> /dev/null; then
       date="gdate"
@@ -116,4 +117,16 @@ gitat () {
         export GIT_AUTHOR_DATE="$now"
         export GIT_COMMITTER_DATE="$now"
     fi
+}
+
+greptodo () {
+  grep -Rin -w -e todo -e fixme "$@"
+}
+
+txz-archive () {
+  if [[ $# -ne 1 ]]; then
+    echo "USAGE: txz-dir DIR"
+    return 1
+  fi
+  time tar cJvf "$1.txz" "$1" && rm -rvf "$1"
 }
