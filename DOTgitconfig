@@ -41,6 +41,7 @@
 
     # diff between (current ancestor) and another branch
     diff-if-merge = !"foo () { local ancestor=$(git merge-base HEAD \"$1\" ); git diff $ancestor \"$1\" ; } ; foo "
+    dw-if-merge = !"foo () { local ancestor=$(git merge-base HEAD \"$1\" ); git dw $ancestor \"$1\" ; } ; foo "
 
 [core]
     whitespace = trailing-space,space-before-tab
