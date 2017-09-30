@@ -14,10 +14,9 @@
     cm    = commit -ev
     # rewrite last commit with current author and date
     rw    = commit --amend --reset-author
-    r     = checkout --
     # discard from work tree (and checkout HEAD)
+    r     = checkout --
     rp    = checkout -p --
-    unadd = reset HEAD
     d     = difftool
     mp    = !"foo () { git format-patch -C -M --stdout --attach \"$@\" | git imap-send ; } ; foo"
     klean = clean -x -d -f  # remove all non-tracked and ignored files
@@ -26,16 +25,18 @@
     b         = branch -avv
     s         = status -sb
     gca       = gc     --aggressive
-    # diff-word (works poorly with multi-byte chars)
+    # diff-word (works poory with multi-byte chars)
     dw        = diff   --color-words='\\w+|.'   --minimal --ignore-all-space
     # diff-char (works poorly with multi-byte chars)
     dc        = diff   --color-words=.          --minimal --ignore-all-space
     # track: show patches to specified file(s)
     track     = log -p -M --follow --stat --
-    update-submodule = submodule foreach "git checkout master && git pull"
+    update-submodule = !"foo() { git submodule foreach 'git checkout master' && git submodule foreach 'git pull' ; } ; foo "
+
     # "try" a merge without creating a commit. one can `git merge --abort` or `git dontmerge` later
     try-merge = merge --no-commit --no-ff
     dontmerge = merge --abort
+
     # unmerged branch to specified commit-ish, or HEAD
     unmerged  = branch -avv --no-merged
 
