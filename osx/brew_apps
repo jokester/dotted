@@ -1,5 +1,17 @@
-brew tap homebrew/dupes
-brew install git cmake cscope ctags ruby apktool imagemagick
-brew install lftp nmap aria2 privoxy
-brew install p7zip pv screen unrar xz wget midnight-commander dos2unix htop-osx zsh
-brew install macvim --override-system-vim
+# vim: ft=sh
+
+set -uex
+
+brew install \
+    git cmake cscope ctags apktool  \
+    lftp nmap aria2 p7zip pv screen \
+    unrar xz wget midnight-commander \
+    dos2unix htop-osx
+
+if false ; then
+    # removed and using
+    # using version in osx:
+    ruby screen imagemagick privoxy
+    zsh
+    macvim --override-system-vim
+fi
