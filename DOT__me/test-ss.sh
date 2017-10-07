@@ -2,7 +2,7 @@
 
 set -ue
 
-URL="http://ipinfo.io"
+URL="https://ipinfo.io"
 
 log () {
   echo $(date) "$@"
@@ -26,6 +26,8 @@ test-server () {
 
   info "starting ss-local for server $SERVER_ADDR"
 
+  local LOGFILE="/tmp/test-ss.$$.log"
+
   ss-local \
     -s "$SERVER_ADDR" \
     -p "$SERVER_PORT" \
@@ -33,10 +35,9 @@ test-server () {
     -i "127.0.0.1"    \
     -k "$PASSWORD"    \
     -l $LOCAL_PORT    \
-    -v &>"/tmp/test-ss.$$.log" &
+    -v &>"$LOGFILE" &
 
   local SS_CLIENT_PID=$!
-  local LOGFILE="/tmp/test-ss.$SS_CLIENT_PID.log"
   sleep 1
   if ! ps $SS_CLIENT_PID &>/dev/null; then
     error "could not start ss-local. check $LOGFILE for log"
@@ -70,7 +71,8 @@ ENC_METHOD="$1"
 PASSWORD="$2"
 SERVER_PORT="$3"
 while [[ $# -ge 4 ]]; do
-  test-server "$ENC_METHOD" "$PASSWORD" "$SERVER_PORT" "$4"
+  test-server "$ENC_METHOD" "$PASSWORD" "$SERVER_PORT" "$4" &
+  wait
   shift
   LOCAL_PORT=$(( 1+LOCAL_PORT ))
 done
