@@ -2,6 +2,12 @@
 set -ue
 cd "$(dirname "$0")"
 
+# fix dir discarded by git
+fix-permission () {
+  chmod -c 0700 DOTssh DOT__me DOTconfig DOTgnupg DOTweechat
+  chmod -c 0600 DOTssh/config
+}
+
 link-dotfile () {
   for dotfile in "$@"; do
     local newfile="$HOME/.${dotfile:3}"
@@ -24,5 +30,7 @@ link-dotfile () {
     fi
   done
 }
+
+fix-permission
 
 link-dotfile DOT*
