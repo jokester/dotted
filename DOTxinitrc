@@ -53,6 +53,10 @@ init_____xfce () {
   # eval $(ssh-agent -s)
 }
 
+if [[ -d "$HOME/Android/Sdk" ]]; then
+  export ANDROID_HOME="$HOME/Android/Sdk"
+fi
+
 init_____xfce
 log 'xinitrc' 'running'
 unset init_____xfce
