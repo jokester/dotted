@@ -15,8 +15,9 @@ rsync
 mc
 
 arch-install-scripts
-zsh
 bash-completion
+zsh
+zsh-syntax-highlighting
 screen
 mlocate
 
@@ -39,6 +40,7 @@ iftop
 sysstat
 time
 cronie
+thermald
 
 wicd
 
