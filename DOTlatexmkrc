@@ -1,0 +1,28 @@
+# vim: ft=perl
+
+use File::Which qw/ which /;
+use Data::Dumper;
+
+$pdf_mode = 1; # use pdflatex
+$pdflatex = "pdflatex -file-line-error -halt-on-error";
+
+&find_pdf_previewer(\$pdf_previewer);
+
+sub find_pdf_previewer {
+    my $result = shift;
+    my $os = `uname`;
+
+    if( $os =~ /linux/i ){
+        print "is linux\n";
+        my @previewers = qw/ evince /;
+        for(@previewers){
+            $found = which $_;
+            if($found){
+                $$result = $found;
+                return;
+            }
+        }
+    }
+
+}
+

@@ -1,0 +1,35 @@
+// read env variable as string or integer
+def env = { System.getenv it }
+def envInt = { Integer.parseInt(env(it)) }
+
+android {
+    defaultConfig {
+        if (env("ANDROID_VERSION_CODE")) {
+            versionCode envInt("ANDROID_VERSION_CODE")
+            versionName env("ANDROID_VERSION_NAME")
+        } else {
+            // failback versions, so we don't have to set env-varables in IDE.
+            versionCode 1
+            versionName "1.0"
+        }
+    }
+}
+
+if (env("ANDROID_SIGN_APK"))
+// only apply when setted
+android {
+    signingConfigs {
+        releaseSigning {
+            storeFile file(env("ANDROID_KEYSTORE_PATH"))
+            storePassword env("ANDROID_KEYSTORE_PASS")
+            keyAlias env("ANDROID_KEY_ALIAS")
+            keyPassword env("ANDROID_KEY_PASS")
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.releaseSigning
+        }
+    }
+}
