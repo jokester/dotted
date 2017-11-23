@@ -4,8 +4,8 @@ cd "$(dirname "$0")"
 
 # fix dir discarded by git
 fix-permission () {
-  chmod -c 0700 DOTssh DOT__me DOTconfig DOTgnupg DOTweechat
-  chmod -c 0600 DOTssh/config
+  chmod 0700 DOTssh DOT__me DOTconfig DOTgnupg DOTweechat
+  chmod 0600 DOTssh/config
 }
 
 link-dotfile () {
