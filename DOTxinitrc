@@ -27,7 +27,7 @@ init_____xfce () {
     xrandr --output HDMI-0 --set underscan on
   fi
 
-  if [ "$hostname" = "kakitsubata" ] || [ "$hostname" = "cosmos" ] ;then
+  if [ "$hostname" = "djpon" ] || [ "$hostname" = "cosmos" ] ;then
     setxkbmap jp
   else
     log "not running setxkbmap jp"

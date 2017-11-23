@@ -136,4 +136,10 @@ set shiftwidth=4
 set expandtab
 set smarttab
 
+if &diff
+    set diffopt=context:99999
+    set foldmethod=manual
+
+endif
+
 autocmd BufNewFile,BufRead *.md set filetype=markdown
