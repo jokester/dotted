@@ -164,3 +164,6 @@ Bundle 'leafgarland/typescript-vim'
 " jsx
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+
+" glsl
+Plugin 'tikhomirov/vim-glsl'
