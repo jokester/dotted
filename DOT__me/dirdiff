@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -ue
+if [[ $# -ne 2 ]]; then
+  echo "USAGE: $0 DIR1 DIR2"
+  exit 1
+fi
+
+# no escaping: likely to fail with space in pathname
+exec vim -c "DirDiff $1 $2"

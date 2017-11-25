@@ -10,6 +10,7 @@ Bundle 'mbbill/fencview'
 
 " diff 2 dirs
 Bundle 'vim-scripts/DirDiff.vim'
+let g:DirDiffExcludes=".git,node_modules"
 
 " better grep
 nnoremap ,a :Ack
