@@ -13,3 +13,6 @@ pciconf -lv
 # lsblk
 camcontrol devlist
 
+# list partitios
+gpart list
+gpart show
