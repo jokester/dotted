@@ -1,4 +1,6 @@
-screen htop mc git vim-nox pv
-iotop ruby sysstat
-cmake build-essential python-dev
-ca-certificates apt-transport-https gnupg2 curl weechat
+btrfs-progs sudo
+screen zsh git vim-nox pv mc
+htop iotop sysstat
+ruby cmake build-essential python-dev
+software-properties-common ca-certificates apt-transport-https
+gnupg2 curl weechat
