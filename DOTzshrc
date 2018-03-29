@@ -1,11 +1,14 @@
 # vim: ft=sh
 # Path to your oh-my-zsh configuration.
 
+export LANG=en_US.UTF-8
+
 alias s=screen
 alias rsync="rsync -P --hard-links -r"
 alias grep="grep --color=auto"
 alias less="less -R"
 alias now="date '+%Y%m%d-%H%M%S-%N'"
+alias rn=react-native
 
 if [ -d /usr/local/share/zsh-completions ]; then
   fpath=(/usr/local/share/zsh-completions $fpath)
@@ -46,13 +49,8 @@ elif [[ -d "$HOME/Android/Sdk" ]]; then
 fi
 
 prepend_to_path \
-  "$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+  "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
 
-# Add GHC 7.10.2 to the PATH, via https://ghcformacosx.github.io/
-export GHC_DOT_APP="/opt/homebrew-cask/Caskroom/ghc/7.10.2-r0/ghc-7.10.2.app"
-if [ -d "$GHC_DOT_APP" ]; then
-  export PATH="${HOME}/.local/bin:${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
-fi
 ZSH_THEME="my-theme"
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
