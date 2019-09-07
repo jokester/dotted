@@ -122,6 +122,10 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#f3b6cf ctermbg=4 "pin
 
 " syntax check
 Bundle 'scrooloose/syntastic'
+let g:syntastic_mode_map = { 'mode': 'active',
+                           \ 'active_filetypes': [],
+                           \ 'passive_filetypes': ['java', 'scala'] }
+
 
 " code completion
 Bundle 'Valloric/YouCompleteMe'
@@ -158,7 +162,8 @@ Bundle "ekalinin/Dockerfile.vim"
 
 Bundle 'vim-scripts/tir_black'
 
-Bundle 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-airline/vim-airline'
 
 Bundle 'leafgarland/typescript-vim'
 
@@ -166,5 +171,20 @@ Bundle 'leafgarland/typescript-vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 
+" slim
+Plugin 'slim-template/vim-slim.git'
+
 " glsl
 Plugin 'tikhomirov/vim-glsl'
+
+" command-t
+Plugin 'wincent/command-t'
+nnoremap <F5> :tabnew<CR>:CommandT<CR>
+
+" nginx
+Plugin 'chr4/nginx.vim'
+
+" py
+Plugin 'vim-scripts/python.vim'
+
+Plugin 'nathangrigg/vim-beancount'
