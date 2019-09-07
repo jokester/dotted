@@ -44,7 +44,7 @@ init_____xfce () {
   xmodmap -e 'keycode 66 = Escape'
   xmodmap -e 'keycode 9 = Caps_Lock'
   log "xmodmap executed" "$(date)"
-  xset r rate 200 32
+  xset r rate 160 40
 
   # disable pc speaker
   xset -b
