@@ -38,7 +38,8 @@ prepend_to_path \
   "$HOME/.cabal/bin"                    \
   "$HOME/homebrew/bin"                    \
   "$HOME/.local/bin"                    \
-  "$HOME/local/bin"
+  "$HOME/local/bin"                    \
+  "$HOME/Library/Python/3.7/bin"
 
 if [[ -d "$HOME/Library/Android/sdk" ]]; then
   export ANDROID_HOME="$HOME/Library/Android/sdk"
@@ -134,3 +135,5 @@ txz-archive () {
 
 [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] \
   && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+type rbenv &>/dev/null && eval "$(rbenv init -)"
