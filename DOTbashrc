@@ -39,5 +39,7 @@ else
   : #let rvm handle them
 fi
 
-source $HOME/.__me/color
-source $HOME/.__me/env
+# source $HOME/.__me/color
+# source $HOME/.__me/env
+
+PS1="\\u@\h \\w \\n\\$ "
