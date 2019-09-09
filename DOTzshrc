@@ -82,7 +82,7 @@ DISABLE_AUTO_UPDATE="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(profiles git screen command-not-found adb brew brew-cask bundler cabal dircycle docker docker-compose emoji-clock encode64 extract gem git-extras git-flow gradle history history-substring-search ruby rvm screen systemd)
+plugins=(profiles git screen command-not-found adb brew bundler cabal dircycle docker docker-compose emoji-clock encode64 extract gem git-extras git-flow gradle history history-substring-search ruby rvm screen systemd)
 # no specify: dirty
 GIT_STATUS_IGNORE_SUBMODULES=git
 
