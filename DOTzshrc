@@ -1,11 +1,14 @@
 # vim: ft=sh
 # Path to your oh-my-zsh configuration.
 
+export LANG=en_US.UTF-8
+
 alias s=screen
 alias rsync="rsync -P --hard-links -r"
 alias grep="grep --color=auto"
 alias less="less -R"
 alias now="date '+%Y%m%d-%H%M%S-%N'"
+alias rn=react-native
 
 if [ -d /usr/local/share/zsh-completions ]; then
   fpath=(/usr/local/share/zsh-completions $fpath)
@@ -35,7 +38,8 @@ prepend_to_path \
   "$HOME/.cabal/bin"                    \
   "$HOME/homebrew/bin"                    \
   "$HOME/.local/bin"                    \
-  "$HOME/local/bin"
+  "$HOME/local/bin"                    \
+  "$HOME/Library/Python/3.7/bin"
 
 if [[ -d "$HOME/Library/Android/sdk" ]]; then
   export ANDROID_HOME="$HOME/Library/Android/sdk"
@@ -46,13 +50,8 @@ elif [[ -d "$HOME/Android/Sdk" ]]; then
 fi
 
 prepend_to_path \
-  "$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+  "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
 
-# Add GHC 7.10.2 to the PATH, via https://ghcformacosx.github.io/
-export GHC_DOT_APP="/opt/homebrew-cask/Caskroom/ghc/7.10.2-r0/ghc-7.10.2.app"
-if [ -d "$GHC_DOT_APP" ]; then
-  export PATH="${HOME}/.local/bin:${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
-fi
 ZSH_THEME="my-theme"
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
@@ -83,7 +82,7 @@ DISABLE_AUTO_UPDATE="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(profiles git screen command-not-found adb brew brew-cask bundler cabal dircycle docker docker-compose emoji-clock encode64 extract gem git-extras git-flow gradle history history-substring-search ruby rvm screen systemd)
+plugins=(profiles git screen command-not-found adb brew bundler cabal dircycle docker docker-compose emoji-clock encode64 extract gem git-extras git-flow gradle history history-substring-search ruby rvm screen systemd)
 # no specify: dirty
 GIT_STATUS_IGNORE_SUBMODULES=git
 
@@ -136,3 +135,5 @@ txz-archive () {
 
 [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] \
   && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+type rbenv &>/dev/null && eval "$(rbenv init -)"

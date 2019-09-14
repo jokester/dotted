@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -ue
+set -o pipefail
+temp_basename="screenshot-$(date '+%Y%m%d-%H%M%S-%N').png"
+temp_remote="/sdcard/$temp_basename"
+temp_local="/tmp/$temp_basename"
+
+(
+  adb shell screencap -p "$temp_remote"
+  adb pull "$temp_remote" "$temp_local"
+  adb shell rm "$temp_remote"
+  echo "screenshot saved at $temp_local"
+) >&2
+
+if [[ ! -t 1 ]]; then
+  exec cat "$temp_local"
+else
+  echo "FYI: this script can be used to pipe the new screenshot into a file"
+  echo "    e.g. $0 > screen.png"
+fi

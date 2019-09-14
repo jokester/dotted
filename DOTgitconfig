@@ -10,6 +10,8 @@
     ui          = auto
 [alias]
     lg    = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) / %C(cyan)commited %cD%C(reset) %C(bold yellow)%d%C(reset) %n''          %C(white)%s%C(reset) %C(bold white)- %an%C(reset)'
+    lg-merged = log --graph --merges --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) / %C(cyan)commited %cD%C(reset) %C(bold yellow)%d%C(reset) %n''          %C(white)%s%C(reset) %C(bold white)- %an%C(reset)'
+    f     = fetch --all --prune
     co    = checkout
     cm    = commit -ev
     # rewrite last commit with current author and date
@@ -17,7 +19,7 @@
     # discard from work tree (and checkout HEAD)
     r     = checkout --
     rp    = checkout -p --
-    d     = difftool
+    d     = diff --color-words
     mp    = !"foo () { git format-patch -C -M --stdout --attach \"$@\" | git imap-send ; } ; foo"
     klean = clean -x -d -f  # remove all non-tracked and ignored files
     txz   = !"foo () { if [ -n \"$1\" ]; then treeish=\"$1\" ; else treeish=HEAD; fi; git archive \"$treeish\" | xz -9 ; } ; foo "
@@ -41,12 +43,17 @@
     unmerged  = branch -avv --no-merged
     merged    = branch -avv --merged
 
+    # show-merge SOME_MERGE_COMMIT <options>
+    show-merge = !"foo() { set -x; git diff $1^1..$1 ${@:2}; }; foo "
+
     # diff between (current ancestor) and another branch
-    diff-if-merge = !"foo () { local ancestor=$(git merge-base HEAD \"$1\" ); git diff $ancestor \"$1\" ; } ; foo "
+    changed-ours = !"foo () { `#set -x;` local ancestor=$(git merge-base HEAD \"$1\" ); git diff $ancestor HEAD \"${@:2}\" ; } ; foo "
+    changed-theirs = !"foo () { local ancestor=$(git merge-base HEAD \"$1\" ); git diff $ancestor \"$@\" ; } ; foo "
     dw-if-merge = !"foo () { local ancestor=$(git merge-base HEAD \"$1\" ); git dw $ancestor \"$1\" ; } ; foo "
 
+
     # push if remote branch aligns with local
-    pushl = push --force-with-leash
+    pushl = push --force-with-lease
 
 [core]
     whitespace = trailing-space,space-before-tab
