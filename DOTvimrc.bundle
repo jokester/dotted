@@ -188,3 +188,5 @@ Plugin 'chr4/nginx.vim'
 Plugin 'vim-scripts/python.vim'
 
 Plugin 'nathangrigg/vim-beancount'
+
+Plugin 'jparise/vim-graphql'

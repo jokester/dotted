@@ -144,3 +144,5 @@ endif
 
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 set nofoldenable
+
+command -nargs=1 -complete=file Diff vert diffsplit <args>
