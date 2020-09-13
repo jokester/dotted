@@ -136,8 +136,6 @@ txz-archive () {
 [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] \
   && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-type rbenv &>/dev/null && eval "$(rbenv init -)"
-
 # gpg agent
 if type gpg >/dev/null ; then
   export GPG_TTY="$(tty)"
