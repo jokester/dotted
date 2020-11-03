@@ -1,8 +1,11 @@
-# inst packages.sh
+#!/usr/bin/env bash
+
+set -ue
 echo "install packages"
 pacstrap              \
+  -G -M -c            \
   -C /etc/pacman.conf \
   /mnt                \
-  $(<pkglist_basic)
+  $(grep -v '^#' "$1")
 
 cp pkglist_* /mnt/root -v

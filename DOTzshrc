@@ -49,8 +49,6 @@ elif [[ -d "$HOME/Android/Sdk" ]]; then
   prepend_to_path "$HOME/Android/Sdk/platform-tools"
 fi
 
-prepend_to_path \
-  "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
 
 ZSH_THEME="my-theme"
 # Set to this to use case-sensitive completion
@@ -136,4 +134,9 @@ txz-archive () {
 [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] \
   && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-type rbenv &>/dev/null && eval "$(rbenv init -)"
+setup-gpg-agent () {
+  # export GPG_TTY="$(tty)"
+  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+  gpgconf --launch gpg-agent
+  # gpg-connect-agent updatestartuptty /bye > /dev/null
+}

@@ -1,8 +1,5 @@
 # vim: ft=sshconfig
-# shell completion
-
-# BEGIN hosts
-# END  hosts
+Include config.d/*.conf
 
 # BEGIN snippets
 Host *tun*
