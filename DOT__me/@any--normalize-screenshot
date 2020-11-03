@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -ue
+set -o pipefail
+
+if [[ $# -ne 3 ]]; then
+  cat 1>&2 <<END
+USAGE: $0 SRC_FILE PHYSICAL_SIZE NEW_FILE
+
+size of DST_FILE (in pixels) will be proportional to PHYSICAL_SIZE (160 DPI)
+END
+  exit 1
+elif ! command -v convert; then
+  echo 1>&2 "'convert' program not available'"
+  exit 2
+fi
+
+input_file="$1"
+physical_size="$2"
+new_file="$3"
+
+orig_width=$(identify -format "%w" "$input_file")
+orig_height=$(identify -format "%h" "$input_file")
+
+orig_dpi=$(echo "sqrt( $orig_width * $orig_width + $orig_height * $orig_height ) / $physical_size " | bc -l)
+ratio=$(echo "160.0000 / $orig_dpi" | bc -l)
+
+new_size="$(echo "$ratio * $orig_width" | bc)x$(echo "$ratio * $orig_height" | bc)"
+
+echo "input: ${orig_width}x${orig_height} @ $orig_dpi DPI"
+echo "output: $new_size @ 160 DPI"
+
+convert "$input_file" -resize "$new_size" "$new_file"
+
