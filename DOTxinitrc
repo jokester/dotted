@@ -38,12 +38,14 @@ init_____xfce () {
   fi
 
   # fcitx-xkb causes xmodmap settings to be reset
-  fcitx -rd --disable fcitx-xkb
+  fcitx -rd # --disable fcitx-xkb
 
-  xmodmap -e 'clear Lock'
-  xmodmap -e 'keycode 66 = Escape'
-  xmodmap -e 'keycode 9 = Caps_Lock'
-  log "xmodmap executed" "$(date)"
+  # no need to run xmodmap.
+  # run this for once instead:
+  #   $ localectl --no-convert set-x11-keymap us pc104 ,qwerty 'caps:swapescape'
+  # xmodmap -e 'clear Lock'
+  # xmodmap -e 'keycode 66 = Escape'
+  # xmodmap -e 'keycode 9 = Caps_Lock'
   xset r rate 160 40
 
   # disable pc speaker
@@ -51,6 +53,9 @@ init_____xfce () {
 
   # ssh-agent
   # eval $(ssh-agent -s)
+
+  # enable touch scroll in fx
+  export MOZ_USE_XINPUT2=1
 }
 
 if [[ -d "$HOME/Android/Sdk" ]]; then

@@ -2,7 +2,7 @@ base-devel
 
 ruby
 
-nodejs
+nodejs-lts-erbium
 
 ctags
 cmake

@@ -1,10 +1,10 @@
 base
 
 # kernel / firmware / ucode
-linux
-linux-firmware
-intel-ucode
-amd-ucode
+linux-raspberrypi4
+linux-raspberrypi4-headers
+raspberrypi-bootloader-x
+raspberrypi-firmware
 
 # daemons
 wicd
@@ -15,7 +15,6 @@ cronie
 logrotate
 
 # interactive shell
-sudo
 bash-completion
 zsh
 zsh-syntax-highlighting
@@ -41,7 +40,6 @@ p7zip
 unace
 
 # system tools
-arch-install-scripts
 ntfs-3g
 dosfstools
 btrfs-progs
@@ -64,5 +62,4 @@ htop
 powertop
 iftop
 sysstat
-thermald
 

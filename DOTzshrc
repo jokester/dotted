@@ -49,8 +49,6 @@ elif [[ -d "$HOME/Android/Sdk" ]]; then
   prepend_to_path "$HOME/Android/Sdk/platform-tools"
 fi
 
-prepend_to_path \
-  "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
 
 ZSH_THEME="my-theme"
 # Set to this to use case-sensitive completion

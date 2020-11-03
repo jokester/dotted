@@ -2,7 +2,7 @@
 
 set -ue
 
-URL="https://ipinfo.io"
+TEST_URL="http://ip111.cn/"
 
 log () {
   echo $(date) "$@"
@@ -47,7 +47,7 @@ test-server () {
   fi
 
   sleep 5
-  if curl ipinfo.io --proxy "socks5://127.0.0.1:$LOCAL_PORT" --max-time 10 ; then
+  if curl "$TEST_URL" --proxy "socks5://127.0.0.1:$LOCAL_PORT" --max-time 10 ; then
     echo
     info "server at $SERVER_ADDR:$SERVER_PORT is working normally"
   else
