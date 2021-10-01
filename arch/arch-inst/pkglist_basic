@@ -7,10 +7,8 @@ intel-ucode
 amd-ucode
 
 # daemons
-wicd
-netctl
+networkmanager
 openssh
-ntp
 cronie
 logrotate
 
@@ -29,6 +27,7 @@ words
 ack
 dos2unix
 pv
+progress
 lftp
 tsocks
 corkscrew
