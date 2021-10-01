@@ -3,7 +3,7 @@
 set -ue
 echo "install packages"
 pacstrap              \
-  -G -M -c            \
+  -G                  \
   -C /etc/pacman.conf \
   /mnt                \
   $(grep -v '^#' "$1")
