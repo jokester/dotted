@@ -26,7 +26,6 @@
     m         = merge  --no-ff
     b         = branch -avv
     s         = status -sb
-    gca       = gc     --aggressive
     # diff-word (works poory with multi-byte chars)
     dw        = diff   --color-words='\\w+|.'   --minimal --ignore-all-space
     # diff-char (works poorly with multi-byte chars)
@@ -67,24 +66,11 @@
     tool = gvimdiff
 [difftool]
     prompt = false
-[imap]
-    folder = "[Gmail]/Drafts"
-    host = imaps://imap.gmail.com
-    user = momocraft@gmail.com
-    pass = bsmppivgfztgkiar
-    port = 993
-    sslverify = true
-
-# DISABLED because I don't want to install perl ssl modules
-; [sendemail]
-;     smtpencryption = tls
-;     smtpserver = smtp.gmail.com
-;     smtpuser = momocraft@gmail.com
-;     smtpserverport = 587
-;     smtppass = bsmppivgfztgkiar
 [push]
     default = current
 [credential]
     helper = "cache --timeout 3600"
 [rerere]
 	enabled = true
+[pull]
+	ff = only
