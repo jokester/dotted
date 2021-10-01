@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "proceeding will install archlinux into /mnt"
+echo "installing archlinux into /mnt"
 echo "make sure new root is mounted at /mnt before running this"
 echo "CTRL-c if you want to stop. enter to continue"
 read
@@ -9,8 +9,11 @@ set -uex
 
 cd $(dirname "$0")
 
-bash ./tasks/010_inst_packages.sh pkglist_rbpi_basic
+echo "NOT REVISED IN YEARS. DO NOT USE"
 
+exit 1
+
+bash ./tasks/010_inst_packages.sh pkglist_rbpi_basic
 bash ./tasks/020_gen_fstab.sh
 bash ./tasks/030_set_timezone.sh
 bash ./tasks/040_gen_locale.conf.sh

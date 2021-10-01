@@ -1,6 +1,0 @@
-for i in $@;do
-  if [ -h $i ];then
-    cp -v $i $i.real
-    mv -v $i.real $i
-  fi
-done
