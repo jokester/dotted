@@ -1,8 +1,8 @@
 base-devel
-
 ruby
 
-nodejs-lts-erbium
+nodejs-lts-fermium
+yarn
 
 ctags
 cmake
