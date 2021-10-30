@@ -65,3 +65,6 @@ iftop
 sysstat
 thermald
 
+# tweak
+zram-generator
+

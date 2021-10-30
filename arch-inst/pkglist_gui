@@ -4,11 +4,14 @@ lightdm-gtk-greeter
 xfce4
 xfce4-goodies
 
-fcitx
-fcitx-mozc
-fcitx-configtool
+fcitx5 fcitx5-mozc fcitx5-configtool fcitx5-rime fcitx5-chinese-addons
 
-ttf-droid
+ttf-roboto
+ttf-roboto-mono
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+noto-fonts-extra
 
 firefox
 
@@ -20,3 +23,7 @@ xorg-server-xephyr
 zenity
 
 file-roller
+
+pulseaudio
+pavucontrol
+synergy

@@ -1,0 +1,7 @@
+# vim: ft=conf
+# packages for nvidia gpu
+mesa-demos
+nvidia
+nvidia-settings
+nvtop
+hashcat

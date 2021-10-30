@@ -9,4 +9,11 @@ cmake
 
 nginx
 
+sbt
+jdk11-openjdk
+
 docker
+android-udev
+
+mariadb-clients
+postgresql-libs
