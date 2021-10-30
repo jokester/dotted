@@ -9,7 +9,7 @@ set -uex
 
 cd $(dirname "$0")
 
-echo "NOT REVISED IN YEARS. DO NOT USE"
+echo "NOT REVISED IN YEARS. DO NOT USE. see manjaro / raspberian instead"
 
 exit 1
 
