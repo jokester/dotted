@@ -4,7 +4,7 @@ lightdm-gtk-greeter
 xfce4
 xfce4-goodies
 
-fcitx5 fcitx5-mozc fcitx5-configtool fcitx5-rime fcitx5-chinese-addons
+fcitx5-im fcitx5-mozc fcitx5-configtool fcitx5-rime fcitx5-chinese-addons
 
 ttf-roboto
 ttf-roboto-mono

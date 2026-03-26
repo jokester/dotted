@@ -1,5 +1,6 @@
 /DOTvim/
 /DOTssh/
+!/DOTssh/*.d
 /DOTweechat/logs/
 /DOTweechat/**/*.log
 /DOTconfig/*

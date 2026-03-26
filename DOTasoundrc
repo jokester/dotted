@@ -1,5 +1,22 @@
 # "card #" in `aplay -l`
-# defaults.ctl.card 2
-# defaults.pcm.card 2
-# defaults.timer.card 2
+# defaults.ctl.card 1
+# defaults.pcm.card 1
+# defaults.timer.card 1
+pcm.!default "plughw:1,3"
+
+# pcm.dmixer {
+#   type dmix
+#   ipc_key 2048
+#   slave {
+#     pcm "hw:1,3"
+#     period_size 512
+#     buffer_size 4096
+#     rate 48000
+#     format S16_LE
+#   }
+#   bindings {
+#     0 0
+#     1 1
+#   }
+# }
 

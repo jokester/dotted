@@ -146,8 +146,8 @@ Bundle 'Valloric/YouCompleteMe'
 "     autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 
 " code snippets
-Bundle 'SirVer/ultisnips'
-Bundle 'honza/vim-snippets'
+" Bundle 'SirVer/ultisnips'
+" Bundle 'honza/vim-snippets'
 
 " language
 Bundle 'tpope/vim-rails'
@@ -191,3 +191,5 @@ Plugin 'vim-scripts/python.vim'
 Plugin 'nathangrigg/vim-beancount'
 
 Plugin 'jparise/vim-graphql'
+
+Plugin 'hashivim/vim-terraform'

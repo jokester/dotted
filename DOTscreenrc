@@ -69,6 +69,7 @@ bind 'K' kill
 # bind 'O' login off
 bind '}' history
 
-hardstatus alwayslastline "%{= rw}%H%{= wk} %-Lw%{= bw}%n%f* %t%{= wk}%+Lw %{= wk}%=%{= gk} %M %d %c"
+# '%S' requires GNU screen . %l/load requires BSD screen.
+hardstatus alwayslastline "%{= rw}%H:%S%{= wk} %-Lw%{= bw}%n%f* %t%{= wk}%+Lw %{= wk}%=%{= gk} %{=rw}%l %Y%m%d %c%{=wk}"
 #                                HOST       before    current        after             month hh:mm
 term screen-256color

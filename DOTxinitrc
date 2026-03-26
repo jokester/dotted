@@ -18,8 +18,8 @@ log () {
 
 init_____xfce () {
   export XIM=fcitx
-  export GTK_IM_MODULE=xim
-  export QT_IM_MODULE=xim
+  export GTK_IM_MODULE=fcitx
+  export QT_IM_MODULE=fcitx
   export XMODIFIERS=@im=fcitx
 
   local hostname="$(hostname)"
@@ -57,6 +57,8 @@ init_____xfce () {
   # enable touch scroll in fx
   export MOZ_USE_XINPUT2=1
 }
+
+xset -b off
 
 if [[ -d "$HOME/Android/Sdk" ]]; then
   export ANDROID_HOME="$HOME/Android/Sdk"

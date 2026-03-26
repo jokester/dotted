@@ -21,6 +21,7 @@
     rp    = checkout -p --
     d     = diff --color-words
     mp    = !"foo () { git format-patch -C -M --stdout --attach \"$@\" | git imap-send ; } ; foo"
+    dryrun-klean = clean -n -d  # LIST all non-tracked and ignored files
     klean = clean -x -d -f  # remove all non-tracked and ignored files
     txz   = !"foo () { if [ -n \"$1\" ]; then treeish=\"$1\" ; else treeish=HEAD; fi; git archive \"$treeish\" | xz -9 ; } ; foo "
     m         = merge  --no-ff
@@ -28,19 +29,23 @@
     s         = status -sb
     # diff-word (works poory with multi-byte chars)
     dw        = diff   --color-words='\\w+|.'   --minimal --ignore-all-space
+    dt        = difftool
     # diff-char (works poorly with multi-byte chars)
     dc        = diff   --color-words=.          --minimal --ignore-all-space
     # track: show patches to specified file(s)
     track     = log -p -M --follow --stat --
+    # ftr for follow-the-rabbit: show commit that contains the regex ($1) and path (since $2, not working well)
+    follow-the-rabbit = !"foo () { local REGEX=\"$1\"; shift; exec git log -G \"$REGEX\" --patch --pickaxe-all -- \"$@\"; } ; foo "
     update-submodule = !"foo() { git submodule foreach 'git checkout master' && git submodule foreach 'git pull' ; } ; foo "
+    untracked  = log -p -M --follow --stat --
 
     # "try" a merge without creating a commit. one can `git merge --abort` or `git dontmerge` later
     try-merge = merge --no-commit --no-ff
     dontmerge = merge --abort
 
     # unmerged branch to specified commit-ish, or HEAD
-    unmerged  = branch -avv --no-merged
-    merged    = branch -avv --merged
+    unmerged  = !"git branch -avv --no-merged | cut -c3- | cut -d' ' -f1 | sed 's#^remotes/##' "
+    merged    = !"git branch -avv --merged    | cut -c3- | cut -d' ' -f1 | sed 's#^remotes/##' "
 
     # show-merge SOME_MERGE_COMMIT <options>
     show-merge = !"foo() { set -x; git diff $1^1..$1 ${@:2}; }; foo "
@@ -50,22 +55,23 @@
     changed-theirs = !"foo () { local ancestor=$(git merge-base HEAD \"$1\" ); git diff $ancestor \"$@\" ; } ; foo "
     dw-if-merge = !"foo () { local ancestor=$(git merge-base HEAD \"$1\" ); git dw $ancestor \"$1\" ; } ; foo "
 
+    # grep
+    gt = grep -I --line-number --break --heading --show-function --recurse-submodules
 
     # push if remote branch aligns with local
     pushl = push --force-with-lease
 
+    # difftastic
+    dt = difftool
+
 [core]
     whitespace = trailing-space,space-before-tab
-    abbrev = 6
+    abbrev = 7
     editor = "vim"
     quotepath = false
 
 [apply]
     whitespace = fix
-[diff]
-    tool = gvimdiff
-[difftool]
-    prompt = false
 [push]
     default = current
 [credential]
@@ -74,3 +80,22 @@
 	enabled = true
 [pull]
 	ff = only
+[diff]
+    ; tool = difft
+    tool = difftastic
+[difftool]
+    prompt = false
+
+[difftool "difftastic"]
+        cmd = difft "$LOCAL" "$REMOTE"
+[rebase]
+    instructionFormat = "[%an @ %ar] %s"
+[url "ssh://git@github.com/"]
+    pushInsteadOf = https://github.com/
+[fetch]
+	parallel = 0
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

@@ -1,7 +1,7 @@
-btrfs-progs sudo
-screen zsh git vim-nox pv mc
-htop iotop sysstat
-ruby cmake build-essential python-dev
-software-properties-common ca-certificates apt-transport-https
-gnupg2 curl weechat apache2-utils lynx rsync
-smbclient cifs-utils
+byobu tmux sudo zsh git vim pv mc  openssh-client openssh-server   \
+dosfstools btrfs-progs exfatprogs ntfsprogs                    \
+htop iotop sysstat                                             \
+p7zip-full zstd unrar unzip                                                \
+pwgen gnupg2                                                   \
+software-properties-common ca-certificates apt-transport-https \
+dnsutils wget curl wrk lynx rsync
