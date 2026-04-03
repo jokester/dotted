@@ -12,9 +12,10 @@ alias now="date '+%Y%m%d-%H%M%S-%N'"
 # alias s='byobu new'
 alias tf=terraform
 alias b=byobu
+alias bat='byobu attach -t'
 alias g=git
 alias ll='ls -al --color=auto'
-alias sss='byobu new -s $(basename "$PWD")'
+alias sss='byobu new-session -s $(basename "$PWD")'
 
 # use tmux config for byobu cli
 
@@ -53,12 +54,22 @@ elif [[ -d "$HOME/Android/Sdk" ]]; then
   prepend_to_path "$HOME/Android/Sdk/platform-tools"
 fi
 
-# START auto completions
-if [ -d /usr/local/share/zsh-completions ]; then
-  fpath=(/usr/local/share/zsh-completions $fpath)
-fi
+######## plugins START
+_source_rel () {
+  # the magic to source relative of $(realpath current_file)
+  source "$(dirname "${${(%):-%x}:A}")/$1"
+}
 
-setopt AUTO_CD
+_source_rel zsh-plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+_source_rel zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+unset -f _source_rel
+######## plugins END
+
+######## completions START
+fpath=("$(dirname "${${(%):-%x}:A}")/zsh-plugins/zsh-competions/src/" $fpath)
 
 zstyle ':completion:::*:default' menu no select
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
@@ -67,14 +78,14 @@ zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 
 
-# The following lines were added by compinstall
 zstyle :compinstall filename "$HOME/"
 
 fpath+=~/.zfunc
 autoload -Uz compinit
 compinit -C
 compdef byobu=tmux # byobu don't ship shell completions in ArchLinux
-# END completions
+######## completions END
+setopt AUTO_CD
 
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
@@ -107,9 +118,6 @@ txz-archive () {
   fi
   time tar cJvf "$1.txz" "$1" && rm -rvf "$1"
 }
-
-[[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] \
-  && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 setup-gpg-agent () {
   # export GPG_TTY="$(tty)"

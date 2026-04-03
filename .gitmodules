@@ -1,6 +1,12 @@
 [submodule "DOTvim/bundle/vundle"]
 	path = DOTvim/bundle/vundle
 	url = https://github.com/VundleVim/Vundle.vim.git
-[submodule "DOToh-my-zsh"]
-	path = DOToh-my-zsh
-	url = https://github.com/robbyrussell/oh-my-zsh.git
+[submodule "zsh-plugins/zsh-history-substring-search"]
+	path = zsh-plugins/zsh-history-substring-search
+	url = https://github.com/zsh-users/zsh-history-substring-search
+[submodule "zsh-plugins/zsh-syntax-highlighting"]
+	path = zsh-plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule "zsh-plugins/zsh-competions"]
+	path = zsh-plugins/zsh-competions
+	url = https://github.com/zsh-users/zsh-completions
