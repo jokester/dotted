@@ -4,7 +4,7 @@
 add_newline = true
 
 format = """
-$directory $git_branch $git_commit $git_state $git_metrics $git_status
+$directory $git_branch $git_commit $git_state $git_metrics $git_status $time $status $cmd_duration
 $username @ $hostname $character
 """
 [username]
@@ -23,3 +23,14 @@ before_repo_root_style = "dimmed white" # color for path *before* the repo (if s
 truncate_to_repo = false                # set true to hide the path before the repo root
 repo_root_format = "[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style) "
 format = "[$path]($style) "
+
+[cmd_duration]
+min_time = 500
+format = 'underwent [$duration](bold yellow)'
+
+[status]
+pipestatus = true
+disabled = false
+
+[time]
+disabled = false
