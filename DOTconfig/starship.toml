@@ -1,0 +1,25 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+
+format = """
+$directory $git_branch $git_commit $git_state $git_metrics $git_status
+$username @ $hostname $character
+"""
+[username]
+show_always=true
+format = "[$user](bold yellow)"
+[hostname]
+ssh_only=false
+format = "[$hostname](bold cyan)"
+# format='[$ssh_symbol$hostname]($style) @ '
+# format='WTF'
+
+[directory]
+style = "bold cyan"                     # color for path *inside* the repo
+repo_root_style = "bold yellow"         # color for the repo root itself
+before_repo_root_style = "dimmed white" # color for path *before* the repo (if shown)
+truncate_to_repo = false                # set true to hide the path before the repo root
+repo_root_format = "[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style) "
+format = "[$path]($style) "
