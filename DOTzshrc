@@ -21,7 +21,7 @@ alias sss='byobu new-session -s $(basename "$PWD")'
 
 typeset -U path cdpath fpath manpath
 
-if [[ "$TERM" != "screen-256color" ]]; then
+if [[ -z "$TERM" ]]; then
   export TERM=xterm-256color
 fi
 
@@ -48,7 +48,7 @@ prepend_to_path \
 
 if [[ -d "$HOME/Library/Android/Sdk" ]]; then
   export ANDROID_HOME="$HOME/Library/Android/Sdk"
-  prepend_to_path "$HOME/Library/Android/sdk/platform-tools"
+  prepend_to_path "$HOME/Library/Android/Sdk/platform-tools"
 elif [[ -d "$HOME/Android/Sdk" ]]; then
   export ANDROID_HOME="$HOME/Android/Sdk"
   prepend_to_path "$HOME/Android/Sdk/platform-tools"
@@ -80,9 +80,15 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=
 
 zstyle :compinstall filename "$HOME/"
 
-fpath+=~/.zfunc
-autoload -Uz compinit
-compinit -C
+autoload -Uz bashcompinit
+bashcompinit
+
+# autoload -Uz compinit
+autoload -U compinit
+compinit
+if command gcloud &>/dev/null; then
+  source <(gcloud completion zsh)
+fi
 compdef byobu=tmux # byobu don't ship shell completions in ArchLinux
 ######## completions END
 setopt AUTO_CD
