@@ -86,8 +86,11 @@ bashcompinit
 # autoload -Uz compinit
 autoload -U compinit
 compinit
-if command gcloud &>/dev/null; then
-  source <(gcloud completion zsh)
+if command -v gcloud &>/dev/null; then
+  _gcloud_bin="$(command -v gcloud)"
+  _gcloud_sdk_root="${_gcloud_bin:A:h:h}"
+  [[ -f "$_gcloud_sdk_root/completion.zsh.inc" ]] && source "$_gcloud_sdk_root/completion.zsh.inc"
+  unset _gcloud_bin _gcloud_sdk_root
 fi
 compdef byobu=tmux # byobu don't ship shell completions in ArchLinux
 ######## completions END
