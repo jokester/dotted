@@ -58,11 +58,13 @@ fi
 ######## plugins START
 _source_rel () {
   # the magic to source relative of $(realpath current_file)
-  source "$(dirname "${${(%):-%x}:A}")/$1"
+  local dest="$(dirname "${${(%):-%x}:A}")/$1"
+  [[ -f "$dest" ]] && source "$dest"
 }
 
 _source_rel zsh-plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 _source_rel zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+_source_rel DOTzshrc.local
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
@@ -90,11 +92,25 @@ compinit
 if command -v gcloud &>/dev/null; then
   _gcloud_bin="$(command -v gcloud)"
   _gcloud_sdk_root="${_gcloud_bin:A:h:h}"
-  [[ -f "$_gcloud_sdk_root/completion.zsh.inc" ]] && source "$_gcloud_sdk_root/completion.zsh.inc"
+  if [[ -f "$_gcloud_sdk_root/completion.zsh.inc" ]]; then
+    source "$_gcloud_sdk_root/completion.zsh.inc"
+  elif [[ -f "$_gcloud_sdk_root/completion.bash.inc" ]]; then
+    source "$_gcloud_sdk_root/completion.bash.inc"
+  fi
   unset _gcloud_bin _gcloud_sdk_root
 fi
 compdef byobu=tmux # byobu don't ship shell completions in ArchLinux
+if command -v podman &>/dev/null; then
+  eval "$(podman completion zsh)"
+  compdef _podman podman
+fi
 ######## completions END
+
+# up-arrow history search
+autoload -U select-word-style
+select-word-style bash
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
 setopt AUTO_CD
 
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
@@ -142,6 +158,28 @@ setup-gpg-agent () {
 setup-tor-proxy () {
   export http_proxy=socks5h://127.0.0.1:9150
   export https_proxy=socks5h://127.0.0.1:9150
+}
+
+setup-otel-exporter () {
+  export OTEL_METRICS_EXPORTER=otlp       # Options: otlp, prometheus, console, none
+  export OTEL_LOGS_EXPORTER=otlp
+  export OTEL_TRACES_EXPORTER=otlp
+
+  # endpoint
+  # export OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+  # export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
+  export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+  export OTEL_EXPORTER_OTLP_ENDPOINT=https://otel-endpoint.org
+  export OTEL_RESOURCE_ATTRIBUTES="hostname=$HOST"
+
+  # auth
+  # export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer your-token"
+
+  # attributes
+  OTEL_RESOURCE_ATTRIBUTES="host=$HOST"
+
+  # app-wise
+  export CLAUDE_CODE_ENABLE_TELEMETRY=1
 }
 
 if type starship &>/dev/null; then
