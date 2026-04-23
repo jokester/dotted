@@ -205,6 +205,7 @@ unset prepend_to_path
 
 # uv
 export UV_LINK_MODE=symlink # reuse uv package copies across devices
+export UV_EXCLUDE_NEWER=14d
 
 # mise
 if [[ -x ~/.local/bin/mise ]]; then
