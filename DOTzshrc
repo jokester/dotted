@@ -11,11 +11,12 @@ alias now="date '+%Y%m%d-%H%M%S-%N'"
 # alias rn=react-native
 # alias s='byobu new'
 alias tf=terraform
+alias dco='docker compose'
 alias b=byobu
 alias bat='byobu attach -t'
+alias sss='byobu new-session -s $(basename "$PWD")'
 alias g=git
 alias ll='ls -al --color=auto'
-alias sss='byobu new-session -s $(basename "$PWD")'
 
 # use tmux config for byobu cli
 
