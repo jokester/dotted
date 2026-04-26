@@ -1,0 +1,21 @@
+#!/bin/sh -e
+#
+#    session: tmux session name (local override - always show)
+#
+
+__session_detail() {
+	tmux list-sessions
+}
+
+__session() {
+	case "$BYOBU_BACKEND" in
+		tmux)
+			color u W k; printf "${ICON_SESSION}#S"; color --
+		;;
+		screen)
+			color u W k; printf "${ICON_SESSION}%S"; color --
+		;;
+	esac
+}
+
+# vi: syntax=sh ts=4 noexpandtab

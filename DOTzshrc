@@ -160,27 +160,6 @@ setup-tor-proxy () {
   export https_proxy=socks5h://127.0.0.1:9150
 }
 
-setup-otel-exporter () {
-  export OTEL_METRICS_EXPORTER=otlp       # Options: otlp, prometheus, console, none
-  export OTEL_LOGS_EXPORTER=otlp
-  export OTEL_TRACES_EXPORTER=otlp
-
-  # endpoint
-  # export OTEL_EXPORTER_OTLP_PROTOCOL=grpc
-  # export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
-  export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
-  export OTEL_EXPORTER_OTLP_ENDPOINT=https://otel-endpoint.org
-  export OTEL_RESOURCE_ATTRIBUTES="hostname=$HOST"
-
-  # auth
-  # export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer your-token"
-
-  # attributes
-  OTEL_RESOURCE_ATTRIBUTES="host=$HOST"
-
-  # app-wise
-  export CLAUDE_CODE_ENABLE_TELEMETRY=1
-}
 
 if type starship &>/dev/null; then
   eval "$(starship init zsh)"
