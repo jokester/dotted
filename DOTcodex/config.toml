@@ -1,0 +1,22 @@
+# otel: see https://developers.openai.com/codex/agent-approvals-security#enable-otel-opt-in
+[otel]
+environment = "dev"   # dev | staging | prod
+log_user_prompt = true     # redact prompt text unless policy allows
+
+exporter = {
+    otlp-http = {
+        endpoint = "https://TODO.local/v1/logs",
+        protocol = "binary",
+        # headers = { "x-otlp-api-key" = "${OTLP_TOKEN}" }
+    }
+}
+
+trace_exporter = {
+    otlp-http = {
+        endpoint = "https://TODO.local/v1/logs",
+        protocol = "binary"
+    }
+}
+
+[projects."/home/mono/dotted"]
+trust_level = "trusted"
