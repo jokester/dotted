@@ -65,27 +65,44 @@ _source_rel () {
 _source_rel zsh-plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 _source_rel zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
 _source_rel DOTzshrc.local
+# for bare shell
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+# for tmux/screen
+bindkey '^[OA' history-substring-search-up
+bindkey '^[OB' history-substring-search-down
 
 unset -f _source_rel
 ######## plugins END
 
 ######## completions START
+# Add the vendored zsh-completions repo to fpath, resolved relative to this
+# file's realpath. ${(%):-%x}:A expands %x (current sourced file) then :A
+# canonicalizes — works regardless of how/where DOTzshrc is symlinked.
 fpath=("$(dirname "${${(%):-%x}:A}")/zsh-plugins/zsh-competions/src/" $fpath)
 
+# Show completions inline; don't drop into the interactive menu-select UI.
 zstyle ':completion:::*:default' menu no select
+# Pretty group headers / no-match messages (%U underline, %B bold, %d desc).
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+# Matcher fallbacks, tried in order from strict to lenient:
+#   ''                    exact
+#   'm:{a-zA-Z}={A-Za-z}' case-insensitive
+#   'r:|=*'               allow match anywhere to the right of cursor
+#   'l:|=* r:|=*'         allow match anywhere on both sides
 # zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 
 
 zstyle :compinstall filename "$HOME/"
 
+# bashcompinit provides `complete`/`compgen` so bash-style completion scripts
+# work (needed for gcloud's bash fallback below, and assorted vendor tools).
 autoload -Uz bashcompinit
 bashcompinit
 
+# zsh's own completion system. Must run after fpath is set above.
 # autoload -Uz compinit
 autoload -U compinit
 compinit
@@ -100,10 +117,17 @@ if command -v gcloud &>/dev/null; then
   unset _gcloud_bin _gcloud_sdk_root
 fi
 compdef byobu=tmux # byobu don't ship shell completions in ArchLinux
+# podman generates its zsh completion on demand rather than shipping a file.
 if command -v podman &>/dev/null; then
   eval "$(podman completion zsh)"
   compdef _podman podman
 fi
+
+# Restrict ssh/scp/sftp/rsync completion to Host aliases from ~/.ssh/config
+# (and ~/.ssh/config.d/*); setting `hosts` makes _ssh_hosts skip known_hosts.
+zstyle -e ':completion:*:(ssh|scp|sftp|rsync|ssh-copy-id|ssh-add):*' hosts \
+  'reply=( ${(f)"$(awk '\''$1=="Host"{for(i=2;i<=NF;i++)if($i!~/[*?]/)print $i}'\'' \
+     ~/.ssh/config ~/.ssh/config.d/*(N) 2>/dev/null)"} )'
 ######## completions END
 
 # up-arrow history search
@@ -184,7 +208,7 @@ unset prepend_to_path
 
 # uv
 export UV_LINK_MODE=symlink # reuse uv package copies across devices
-export UV_EXCLUDE_NEWER=14d
+# export UV_EXCLUDE_NEWER=3d # set this per project
 
 # mise
 if [[ -x ~/.local/bin/mise ]]; then

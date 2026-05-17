@@ -10,7 +10,11 @@ fix-permission () {
 
 link-dotfile () {
   for dotfile in "$@"; do
-    local newfile="$HOME/.${dotfile:3}"
+    # Strip 'DOT' prefix; also strip a trailing '.override' so that
+    # 'DOTzshrc.override' links to '~/.zshrc'.
+    local target="${dotfile:3}"
+    target="${target%.override}"
+    local newfile="$HOME/.$target"
 
     # when $newfile not exist: just link it
     if [[ ! -e "$newfile" ]]; then
@@ -33,4 +37,19 @@ link-dotfile () {
 
 fix-permission
 
-link-dotfile DOT*
+# Build the link set: skip *.template, and prefer DOTfoo.override over DOTfoo
+# when both exist (the .override entry will be linked in as ~/.foo).
+files=()
+for f in DOT*; do
+  case "$f" in
+    *.template) continue ;;
+  esac
+  if [[ "$f" != *.override && -e "$f.override" ]]; then
+    continue
+  fi
+  files+=("$f")
+done
+
+if [[ ${#files[@]} -gt 0 ]]; then
+  link-dotfile "${files[@]}"
+fi

@@ -12,7 +12,7 @@ export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf # Options; grpc / http/protobuf
 ## site-wise
 # export OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-endpoint.local
 # export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer your-token"
-# export OTEL_RESOURCE_ATTRIBUTES="hostname=$HOST"
+export OTEL_RESOURCE_ATTRIBUTES="hostname=$HOST"
 
 ## app-wise
 # export CLAUDE_CODE_ENABLE_TELEMETRY=1
