@@ -90,8 +90,6 @@
         cmd = difft "$LOCAL" "$REMOTE"
 [rebase]
     instructionFormat = "[%an @ %ar] %s"
-[url "ssh://git@github.com/"]
-    pushInsteadOf = https://github.com/
 [fetch]
 	parallel = 0
 [filter "lfs"]

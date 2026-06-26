@@ -4,5 +4,5 @@ Include config.d/*.conf
 Host *
     ServerAliveInterval 600
     ControlMaster auto
-    ControlPath ~/.ssh/.ssh-socket-%u-%r@%h:%p
+    ControlPath ~/.ssh/.ssh-socket-%C
     Compression yes

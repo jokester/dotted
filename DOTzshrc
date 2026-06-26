@@ -208,9 +208,9 @@ unset prepend_to_path
 
 # uv
 export UV_LINK_MODE=symlink # reuse uv package copies across devices
-# export UV_EXCLUDE_NEWER=3d # set this per project
+# export UV_EXCLUDE_NEWER=3d
 
 # mise
-if [[ -x ~/.local/bin/mise ]]; then
-  eval "$(~/.local/bin/mise activate zsh)"
+if type mise &>/dev/null; then
+  eval "$(mise activate zsh)"
 fi
