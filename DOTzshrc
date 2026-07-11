@@ -4,20 +4,6 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
-alias rsync="rsync -P --hard-links -r"
-alias grep="grep --color=auto"
-alias less="less -R"
-alias now="date '+%Y%m%d-%H%M%S-%N'"
-# alias rn=react-native
-# alias s='byobu new'
-alias tf=terraform
-alias dco='docker compose'
-alias b=byobu
-alias bat='byobu attach -t'
-alias sss='byobu new-session -s $(basename "$PWD")'
-alias g=git
-alias ll='ls -al --color=auto'
-
 # use tmux config for byobu cli
 
 typeset -U path cdpath fpath manpath
@@ -126,8 +112,30 @@ fi
 # Restrict ssh/scp/sftp/rsync completion to Host aliases from ~/.ssh/config
 # (and ~/.ssh/config.d/*); setting `hosts` makes _ssh_hosts skip known_hosts.
 zstyle -e ':completion:*:(ssh|scp|sftp|rsync|ssh-copy-id|ssh-add):*' hosts \
-  'reply=( ${(f)"$(awk '\''$1=="Host"{for(i=2;i<=NF;i++)if($i!~/[*?]/)print $i}'\'' \
+  'reply=( ${(f)"$(awk '\''tolower($1)=="host"{for(i=2;i<=NF;i++){if($i ~ /^#/)break; if($i!~/[*?]/)print $i}}'\'' \
      ~/.ssh/config ~/.ssh/config.d/*(N) 2>/dev/null)"} )'
+
+# Completion for the ssh-forward helper (DOT__me/ssh-forward): 1st arg is an
+# ssh Host alias, then the local and remote [ip:]port specs. Hosts come from the
+# same ~/.ssh/config(.d) source as the zstyle above; the awk breaks on an inline
+# '#' so e.g. `Host owl # comment` yields only `owl`.
+_ssh_forward_complete() {
+  local curcontext="$curcontext" state line
+  _arguments -C \
+    '-H+[local bind address for all listeners (default 127.0.0.1)]:local bind ip:' \
+    '-m[reuse an existing ControlMaster instead of a fresh dedicated connection]' \
+    '-q[quiet: show raw ssh output, skip CONNECT/DISCONNECT parsing]' \
+    '-h[show help]' \
+    '1:ssh host:->host' \
+    '*:mapping (LPORT | LPORT:RPORT | LPORT:RHOST:RPORT):'
+  if [[ $state == host ]]; then
+    local -aU _sf_hosts
+    _sf_hosts=( ${(f)"$(awk 'tolower($1)=="host"{for(i=2;i<=NF;i++){if($i ~ /^#/)break; if($i!~/[*?]/)print $i}}' \
+                 ~/.ssh/config ~/.ssh/config.d/*(N) 2>/dev/null)"} )
+    _describe -t hosts 'ssh host' _sf_hosts
+  fi
+}
+compdef _ssh_forward_complete ssh-forward
 ######## completions END
 
 # up-arrow history search
@@ -169,11 +177,28 @@ txz-archive () {
   time tar cJvf "$1.txz" "$1" && rm -rvf "$1"
 }
 
+# provide $SSH_AUTH_SOCK via yubikey
 setup-gpg-agent () {
+  if [[ -n "$SSH_AUTH_SOCK" ]]; then
+    echo '$SSH_AUTH_SOCK already set'
+    return 1
+  fi
+
   # export GPG_TTY="$(tty)"
   export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   gpgconf --launch gpg-agent
   gpg-connect-agent updatestartuptty /bye > /dev/null # required for mac
+  echo "\$SSH_AUTH_SOCK = $SSH_AUTH_SOCK "
+}
+
+# provide $SSH_AUTH_SOCK via ssh-agent
+setup-ssh-agent () {
+  if [[ -n "$SSH_AUTH_SOCK" ]]; then
+    echo '$SSH_AUTH_SOCK already set'
+    return 1
+  fi
+  eval "$(ssh-agent -s)"
+  echo "\$SSH_AUTH_SOCK = $SSH_AUTH_SOCK . rememember to ssh-add before ssh -A"
 }
 
 # export ANDROID_NDK_HOME="/home/mono/Android/Sdk/ndk/23.1.7779620"
@@ -214,3 +239,20 @@ export UV_LINK_MODE=symlink # reuse uv package copies across devices
 if type mise &>/dev/null; then
   eval "$(mise activate zsh)"
 fi
+
+# command aliases
+alias rsync="rsync -P --hard-links -r"
+alias grep="grep --color=auto"
+alias less="less -R"
+alias now="date '+%Y%m%d-%H%M%S-%N'"
+if type terraform &>/dev/null; then
+  alias tf=terraform
+elif type tofu &> /dev/null; then
+  alias tf=tofu
+fi
+alias dco='docker compose'
+alias b=byobu
+alias bat='byobu attach -t'
+alias sss='byobu new-session -s $(basename "$PWD")'
+alias g=git
+alias ll='ls -al --color=auto'
