@@ -1,0 +1,169 @@
+#!/usr/bin/env bash
+# ssh-forward — open one or more local (-L) SSH port-forwards in the foreground,
+# with a live remote banner and per-connection CONNECT/DISCONNECT logging.
+#
+# Usage: ssh-forward [-m] [-q] [-H LOCAL_IP] SSH_HOST MAPPING [MAPPING ...]
+#
+# All listeners bind LOCAL_IP on THIS machine (-H, default 127.0.0.1). Each
+# MAPPING is one token describing one -L forward, resolved *from the ssh host's*
+# point of view on the remote side:
+#
+#   LPORT              local LPORT  -> ssh host's 127.0.0.1:LPORT
+#   LPORT:RPORT        local LPORT  -> ssh host's 127.0.0.1:RPORT
+#   LPORT:RHOST:RPORT  local LPORT  -> RHOST:RPORT as reachable from the ssh host
+#
+# Behaviour, as grilled:
+#   * `-L` local forward  : listener is on your machine, target is host-side.
+#   * multiple forwards   : one -L per MAPPING, all over one session.
+#   * foreground          : runs a hanging remote command instead of `-N`; the
+#                           command echoes a banner from the host (proof the
+#                           session is live end to end) then sleeps forever.
+#                           Ctrl-C tears the whole thing down.
+#   * ExitOnForwardFailure: if ANY local port is already taken, ssh exits
+#                           non-zero instead of connecting with a dead tunnel.
+#   * multiplexing OFF    : forces a dedicated connection (ControlMaster=no,
+#                           ControlPath=none) so forwarding is predictable even
+#                           when the host's ssh_config uses a ControlMaster.
+#                           Pass -m to reuse an existing master instead.
+#   * connection logging  : ssh runs at -v and its log is filtered so each TCP
+#                           connection through any tunnel prints a timestamped
+#                           [CONNECT] / [DISCONNECT] line. ssh's other debug
+#                           noise is hidden; real errors still pass through.
+#                           Pass -q to disable this and show ssh's raw output.
+set -euo pipefail
+
+prog=${0##*/}
+
+usage() {
+  cat >&2 <<EOF
+Usage: $prog [-m] [-q] [-H LOCAL_IP] SSH_HOST MAPPING [MAPPING ...]
+
+  All listeners bind LOCAL_IP on this machine (default 127.0.0.1; set with -H).
+  Each MAPPING is one token:
+    LPORT              local LPORT -> ssh host's 127.0.0.1:LPORT
+    LPORT:RPORT        local LPORT -> ssh host's 127.0.0.1:RPORT
+    LPORT:RHOST:RPORT  local LPORT -> RHOST:RPORT as reachable from the ssh host
+
+  -H IP  local bind address for all listeners (default 127.0.0.1).
+  -m     keep SSH multiplexing (reuse a ControlMaster). Off by default: this
+         script forces a fresh dedicated connection so forwarding is predictable.
+  -q     quiet: don't parse ssh's log for CONNECT/DISCONNECT events; ssh raw.
+  -h     show this help.
+
+Examples:
+  $prog web1 8000                       # localhost:8000 -> web1's localhost:8000
+  $prog web1 8000:8001                  # localhost:8000 -> web1's localhost:8001
+  $prog web1 8000:10.0.0.5:5432         # localhost:8000 -> 10.0.0.5:5432 via web1
+  $prog web1 8080:3000 5432 6379        # three tunnels over one connection
+  $prog -H 0.0.0.0 web1 8080:3000       # expose the listener on all local ifaces
+EOF
+  exit "${1:-2}"
+}
+
+multiplex=0
+quiet=0
+listen_ip=127.0.0.1
+while getopts ":mqhH:" opt; do
+  case $opt in
+    m) multiplex=1 ;;
+    q) quiet=1 ;;
+    H) listen_ip=$OPTARG ;;
+    h) usage 0 ;;
+    :) echo "$prog: option -$OPTARG requires an argument" >&2; exit 2 ;;
+    *) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# Need a host plus at least one MAPPING.
+(( $# >= 2 )) || usage
+ssh_host=$1
+shift
+
+# valid_port PORT -> 0 if a valid TCP port, else prints error and exits.
+valid_port() {
+  if ! [[ $1 =~ ^[0-9]+$ ]] || (( $1 < 1 || $1 > 65535 )); then
+    echo "$prog: invalid port: '$1'" >&2
+    exit 2
+  fi
+}
+
+# parse_mapping SPEC -> sets globals lport, rhost, rport.
+# Splits on ':'. First field is LPORT, last is RPORT, anything between is RHOST
+# (rejoined with ':' so a bracketed IPv6 literal survives). RHOST defaults to
+# 127.0.0.1; a bare LPORT reuses it as RPORT.
+parse_mapping() {
+  local spec=$1
+  local -a f
+  local IFS=':'
+  read -ra f <<<"$spec"
+  local n=${#f[@]}
+  case $n in
+    1) lport=${f[0]}; rhost=127.0.0.1; rport=${f[0]} ;;
+    2) lport=${f[0]}; rhost=127.0.0.1; rport=${f[1]} ;;
+    *) lport=${f[0]}; rport=${f[n-1]}
+       local mid=( "${f[@]:1:n-2}" )
+       rhost="${mid[*]}"  # IFS=':' rejoins
+       ;;
+  esac
+  [[ -n $rhost ]] || { echo "$prog: empty remote host in mapping '$spec'" >&2; exit 2; }
+  valid_port "$lport"
+  valid_port "$rport"
+}
+
+ssh_opts=( -v -o ExitOnForwardFailure=yes )
+if (( multiplex == 0 )); then
+  ssh_opts+=( -o ControlMaster=no -o ControlPath=none )
+fi
+
+# Build one -L per MAPPING; collect human-readable descriptions.
+fwd_desc=()
+fwd_short=()
+for spec in "$@"; do
+  parse_mapping "$spec"
+  ssh_opts+=( -L "${listen_ip}:${lport}:${rhost}:${rport}" )
+  fwd_desc+=( "${listen_ip}:${lport} (local) -> ${rhost}:${rport} (from ${ssh_host})" )
+  fwd_short+=( "${listen_ip}:${lport}->${rhost}:${rport}" )
+done
+
+# Compact summary for the remote banner: "a->b; c->d".
+printf -v fwd_summary '%s; ' "${fwd_short[@]}"
+fwd_summary=${fwd_summary%; }
+
+# Hanging remote command: prove the pipe end to end, then idle until Ctrl-C.
+remote_cmd="printf '[ssh-forward] session live on %s (uid=%s); holding ${#fwd_short[@]} tunnel(s): ${fwd_summary}\\n' \"\$(hostname)\" \"\$(id -un)\"; while :; do sleep 3600; done"
+
+# Local running-configuration banner.
+{
+  echo "$prog: ------------------------------------------------------------"
+  echo "$prog:  via ssh host : ${ssh_host}"
+  echo "$prog:  local bind   : ${listen_ip}"
+  echo "$prog:  multiplexing : $([ "$multiplex" -eq 1 ] && echo "reused (-m)" || echo "disabled")"
+  echo "$prog:  forwards (${#fwd_desc[@]}):"
+  for d in "${fwd_desc[@]}"; do echo "$prog:    - $d"; done
+  echo "$prog:  Ctrl-C to stop."
+  echo "$prog: ------------------------------------------------------------"
+} >&2
+
+# annotate: turn ssh's -v log into clean per-connection events.
+annotate() {
+  local line ts
+  while IFS= read -r line; do
+    case $line in
+      *"forwarding to"*"requested"*)
+        ts=$(date '+%H:%M:%S'); printf '%s  [CONNECT]     %s\n' "$ts" "$line" >&2 ;;
+      *"free: direct-tcpip"*)
+        ts=$(date '+%H:%M:%S'); printf '%s  [DISCONNECT]  %s\n' "$ts" "$line" >&2 ;;
+      debug[0-9]:*) : ;;                       # swallow ssh's other debug noise
+      *) printf '%s\n' "$line" >&2 ;;          # pass everything else (errors, banner)
+    esac
+  done
+}
+
+if (( quiet == 1 )); then
+  exec ssh "${ssh_opts[@]}" "$ssh_host" "$remote_cmd"
+else
+  # Merge ssh stdout+stderr into the filter; keep the pipeline in the
+  # foreground so Ctrl-C reaches ssh and tears the tunnels down.
+  ssh "${ssh_opts[@]}" "$ssh_host" "$remote_cmd" 2>&1 | annotate
+fi
