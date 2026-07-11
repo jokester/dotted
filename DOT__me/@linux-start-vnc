@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+set -x
+exec vncserver -fg :3 -xstartup ~/.config/tigervnc/xstartup-xfce4 -localhost no
